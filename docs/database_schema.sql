@@ -171,3 +171,4 @@ CREATE TABLE kb_articles (
 ) ENGINE=InnoDB;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
