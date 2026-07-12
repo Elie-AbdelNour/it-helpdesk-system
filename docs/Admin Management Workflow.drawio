@@ -1,0 +1,129 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.0.3 Chrome/140.0.7339.249 Electron/38.7.0 Safari/537.36" version="29.0.3">
+  <diagram id="c45d33842596" name="Diagram 3 - Admin Management Workflow">
+    <mxGraphModel dx="1042" dy="626" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t3_title" value="Diagram 3&amp;nbsp; Admin Management Workflow" style="text;html=1;strokeColor=none;fillColor=none;fontSize=24;fontStyle=1;fontColor=#0F172A;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="120" y="20" width="960" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="t3_sub" value="IT Help Desk &amp; Ticketing Management System" style="text;html=1;strokeColor=none;fillColor=none;fontSize=13;fontColor=#475569;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="120" y="60" width="960" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="d3_n1" value="Admin Login" style="ellipse;whiteSpace=wrap;html=1;fillColor=#DCFCE7;strokeColor=#16A34A;strokeWidth=2;fontColor=#14532D;fontSize=13;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="500" y="115" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d3_n2" value="Open Admin Panel" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=2;fontColor=#0F172A;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="500" y="215" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d3_n3" value="Manage Users&lt;br&gt;&lt;span style=&#39;font-size:11px&#39;&gt;Create / Edit / Deactivate&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#F8FAFC;strokeColor=#64748B;strokeWidth=2;fontColor=#0F172A;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="90" y="350" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="d3_n4" value="Manage Roles&lt;br&gt;&lt;span style=&#39;font-size:11px&#39;&gt;Admin / Agent / Employee / Manager&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#F8FAFC;strokeColor=#64748B;strokeWidth=2;fontColor=#0F172A;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="350" y="350" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="d3_n5" value="Manage Ticket Settings&lt;br&gt;&lt;span style=&#39;font-size:11px&#39;&gt;Categories / Priorities / Statuses&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#F8FAFC;strokeColor=#64748B;strokeWidth=2;fontColor=#0F172A;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="610" y="350" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="d3_n6" value="System Settings&lt;br&gt;&lt;span style=&#39;font-size:11px&#39;&gt;Notifications / General config&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#F8FAFC;strokeColor=#64748B;strokeWidth=2;fontColor=#0F172A;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="870" y="350" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="d3_n7" value="View Activity Logs&lt;br&gt;&lt;span style=&#39;font-size:11px&#39;&gt;User actions and audit trail&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=2;fontColor=#0F172A;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="220" y="510" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="d3_n8" value="Generate Reports&lt;br&gt;&lt;span style=&#39;font-size:11px&#39;&gt;Tickets, agents, SLA, monthly report&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=2;fontColor=#0F172A;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="500" y="510" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="d3_n9" value="Export PDF / Excel" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#E0F2FE;strokeColor=#0284C7;strokeWidth=2;fontColor=#0C4A6E;fontSize=13;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="780" y="510" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="d3_n10" value="Save Changes" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#E0F2FE;strokeColor=#0284C7;strokeWidth=2;fontColor=#0C4A6E;fontSize=13;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="360" y="675" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d3_n11" value="Log Activity" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=2;fontColor=#0F172A;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="640" y="675" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d3_n12" value="Return to Dashboard" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FEE2E2;strokeColor=#DC2626;strokeWidth=2;fontColor=#7F1D1D;fontSize=13;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="500" y="780" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d3_e1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d3_n1" target="d3_n2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d3_e2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d3_n2" target="d3_n3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="300" />
+              <mxPoint x="200" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d3_e3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d3_n2" target="d3_n4" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="300" />
+              <mxPoint x="460" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d3_e4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d3_n2" target="d3_n5" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="300" />
+              <mxPoint x="720" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d3_e5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d3_n2" target="d3_n6" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="300" />
+              <mxPoint x="980" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d3_e6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d3_n3" target="d3_n7" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d3_e7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d3_n4" target="d3_n7" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d3_e8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d3_n5" target="d3_n8" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="670" y="465" />
+              <mxPoint x="600" y="465" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d3_e9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="970" y="420" as="sourcePoint" />
+            <mxPoint x="700" y="510" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="970" y="450" />
+              <mxPoint x="700" y="450" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d3_e10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d3_n8" target="d3_n9" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d3_e11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d3_n7" target="d3_n10" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d3_e12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d3_n8" target="d3_n10" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d3_e13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d3_n9" target="d3_n11" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d3_e14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d3_n10" target="d3_n11" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d3_e15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d3_n11" target="d3_n12" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,111 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.0.3 Chrome/140.0.7339.249 Electron/38.7.0 Safari/537.36" version="29.0.3">
+  <diagram id="e11a40307392" name="Diagram 2 - Ticket Assignment Resolution">
+    <mxGraphModel dx="1042" dy="626" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t2_title" value="Diagram 2&amp;nbsp; Ticket Assignment &amp;amp; Resolution Workflow" style="text;html=1;strokeColor=none;fillColor=none;fontSize=24;fontStyle=1;fontColor=#0F172A;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="120" y="20" width="960" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="t2_sub" value="IT Help Desk &amp; Ticketing Management System" style="text;html=1;strokeColor=none;fillColor=none;fontSize=13;fontColor=#475569;align=center;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="120" y="60" width="960" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="lane_support" value="Admin / IT Support Agent" style="swimlane;html=1;startSize=34;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#334155;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="100" width="520" height="690" as="geometry" />
+        </mxCell>
+        <mxCell id="lane_employee" value="Employee" style="swimlane;html=1;startSize=34;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#334155;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="640" y="100" width="500" height="690" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_n1" value="Admin / IT Agent&lt;br&gt;views open tickets" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=2;fontColor=#0F172A;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="190" y="150" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_n2" value="Assign&lt;br&gt;ticket?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontColor=#78350F;fontSize=13;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="230" y="250" width="140" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_n3" value="Manual assignment:&lt;br&gt;select support agent" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#F8FAFC;strokeColor=#64748B;strokeWidth=2;fontColor=#0F172A;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="70" y="390" width="200" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_n4" value="Automatic assignment:&lt;br&gt;system chooses available agent" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#F8FAFC;strokeColor=#64748B;strokeWidth=2;fontColor=#0F172A;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="330" y="390" width="200" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_n5" value="Ticket status =&lt;br&gt;In Progress" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#E0F2FE;strokeColor=#0284C7;strokeWidth=2;fontColor=#0C4A6E;fontSize=13;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="190" y="500" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_n6" value="Agent adds comments&lt;br&gt;or internal notes" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=2;fontColor=#0F172A;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="190" y="610" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_n7" value="Issue&lt;br&gt;solved?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontColor=#78350F;fontSize=13;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="820" y="610" width="140" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_n8" value="Ticket status =&lt;br&gt;Pending" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#E0F2FE;strokeColor=#0284C7;strokeWidth=2;fontColor=#0C4A6E;fontSize=13;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="500" y="710" width="190" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_n9" value="Ticket status =&lt;br&gt;Resolved" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#E0F2FE;strokeColor=#0284C7;strokeWidth=2;fontColor=#0C4A6E;fontSize=13;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="790" y="490" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_n10" value="Employee reviews&lt;br&gt;the solution" style="rounded=1;whiteSpace=wrap;html=1;arcSize=12;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=2;fontColor=#0F172A;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="790" y="370" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_n11" value="Accepted?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#D97706;strokeWidth=2;fontColor=#78350F;fontSize=13;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="820" y="230" width="140" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_n12" value="Ticket status =&lt;br&gt;Closed" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FEE2E2;strokeColor=#DC2626;strokeWidth=2;fontColor=#7F1D1D;fontSize=13;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="790" y="150" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_e1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d2_n1" target="d2_n2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_e2" value="Manual" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d2_n2" target="d2_n3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_e3" value="Auto" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d2_n2" target="d2_n4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_e4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d2_n3" target="d2_n5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_e5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d2_n4" target="d2_n5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_e6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d2_n5" target="d2_n6" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_e7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d2_n6" target="d2_n7" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_e8" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d2_n7" target="d2_n8" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_e9" value="Follow up" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d2_n8" target="d2_n6" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="500" y="650" />
+              <mxPoint x="410" y="650" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d2_e10" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d2_n7" target="d2_n9" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_e11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d2_n9" target="d2_n10" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_e12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d2_n10" target="d2_n11" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_e13" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d2_n11" target="d2_n12" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d2_e14" value="No / Reopen" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#2563EB;fontColor=#111827;fontSize=12;" parent="1" source="d2_n11" target="d2_n5" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="650" y="280" />
+              <mxPoint x="650" y="530" />
+              <mxPoint x="410" y="530" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
