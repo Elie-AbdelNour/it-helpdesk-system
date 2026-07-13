@@ -12,6 +12,8 @@ dist/
 
 # Logs
 *.log
+*.dtmp
+*.bkp
 
 # OS
 .DS_Store

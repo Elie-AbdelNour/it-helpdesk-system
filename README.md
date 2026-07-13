@@ -16,11 +16,10 @@ it-helpdesk-system/
 |-- backend/              PHP REST API
 |-- frontend/             React application
 |-- database/
-|   `-- schema.sql        MySQL database schema
+|   `-- schema.sql        MySQL executable database schema
 |-- docs/
-|   |-- README.md         Documentation index with diagrams and screenshots
-|   |-- database-schema.md
-|   |-- ERD .jpg
+|   |-- README.md         Documentation index with ERD, workflows, and screenshots
+|   |-- database_schema.sql
 |   |-- workflow diagrams
 |   `-- UI screenshots
 `-- README.md
@@ -29,12 +28,12 @@ it-helpdesk-system/
 ## Documentation
 
 The instructor-facing project materials are in [docs/README.md](docs/README.md).
-That page renders the ERD, workflow diagrams, and UI screenshots directly on
-GitHub.
+That page renders the database ERD, workflow diagrams, and UI screenshots
+directly on GitHub.
 
-- [Database schema notes](docs/database-schema.md)
+- [Database schema shown in docs](docs/database_schema.sql)
 - [Executable MySQL schema](database/schema.sql)
-- [Entity Relationship Diagram](docs/ERD%20.jpg)
+- [Rendered ERD](docs/README.md#entity-relationship-diagram)
 - [Ticket Creation Workflow](docs/Ticket%20Creation%20Workflow.jpg)
 - [Ticket Assignment and Resolution Workflow](docs/Ticket%20Assignment%20Resolution%20Workflow.jpg)
 - [Admin Management Workflow](docs/Admin%20Management%20Workflow.jpg)
@@ -43,16 +42,22 @@ GitHub.
 - [UI Screenshot: Tickets](docs/Tickets.png)
 - [UI Screenshot: Reports, Settings, and Notifications](docs/Reports-Settings-Notifications.png)
 
+## Database Naming Rules
+
+- Table names are plural.
+- Every primary key column is named `id`.
+- Table names and column names do not use underscores.
+
 ## Database
 
 The schema covers:
 
-- Roles, users, and password reset support (`roles`, `users`, `password_resets`)
+- Roles, users, and password reset support (`roles`, `users`, `passwordresets`)
 - Ticket lookups (`categories`, `priorities`, `statuses`)
-- Core ticketing (`tickets`, `ticket_comments`, `ticket_attachments`)
-- Workflow and audit history (`assignment_history`, `activity_logs`)
+- Core ticketing (`tickets`, `ticketcomments`, `ticketattachments`)
+- Workflow and audit history (`assignmenthistories`, `activitylogs`)
 - Communication (`notifications`)
-- Optional knowledge base module (`kb_articles`)
+- Optional knowledge base module (`kbarticles`)
 
 To create the database:
 
