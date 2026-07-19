@@ -1,0 +1,57 @@
+# Requirements for IT Help Desk & Ticketing Management System
+#
+# This is a PHP (Laravel) + React (Vite) + MySQL project, not a Python
+# project - this file is a plain-text list of the system-level tools you
+# need installed to run it, not a `pip install -r requirements.txt` manifest.
+# Actual library dependencies are pinned in:
+#   - backend/composer.json  + backend/composer.lock  (installed via `composer install`)
+#   - frontend/package.json  + frontend/package-lock.json (installed via `npm install`)
+#
+# See README.md for full setup steps.
+
+## System prerequisites (install these yourself)
+
+PHP >= 8.2                 (developed/tested on 8.3.6)
+Composer >= 2.x            https://getcomposer.org/download/
+Node.js >= 18.18           (developed/tested on 18.18.2)
+npm >= 9                   (bundled with Node.js)
+MySQL >= 8.0
+
+## PHP extensions required by Laravel 13 (usually enabled by default)
+
+ext-pdo
+ext-pdo_mysql
+ext-mbstring
+ext-openssl
+ext-tokenizer
+ext-xml
+ext-ctype
+ext-json
+
+## Backend libraries (auto-installed by `composer install` in backend/)
+
+laravel/framework   ^13.8
+laravel/sanctum     ^4.0
+laravel/tinker      ^3.0
+
+## Frontend libraries (auto-installed by `npm install` in frontend/)
+
+react               ^18.3
+react-dom           ^18.3
+react-router-dom    ^6.30
+axios               ^1.18
+tailwindcss         ^3.4
+vite                ^5.4
+
+## Quick install
+
+# Backend
+cd backend
+composer install
+
+# Frontend
+cd frontend
+npm install
+
+# Then follow the "Setup" section in README.md to configure .env,
+# create the MySQL database, run migrations/seeders, and start both dev servers.

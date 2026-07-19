@@ -1,24 +1,63 @@
-# Dependencies
+# ---- Dependencies (installed from composer.json / package.json — never commit) ----
+/backend/vendor/
+/frontend/node_modules/
 node_modules/
 vendor/
 
-# Environment
+# ---- Environment / secrets ----
 .env
-.env.local
+.env.*
+!.env.example
 
-# Build output
-build/
+# ---- Laravel backend ----
+/backend/bootstrap/cache/*.php
+/backend/storage/*.key
+/backend/storage/app/*
+!/backend/storage/app/.gitignore
+!/backend/storage/app/public
+!/backend/storage/app/private
+/backend/storage/framework/cache/*
+/backend/storage/framework/sessions/*
+/backend/storage/framework/testing/*
+/backend/storage/framework/views/*
+!/backend/storage/framework/**/.gitignore
+/backend/storage/logs/*
+!/backend/storage/logs/.gitignore
+/backend/public/hot
+/backend/public/storage
+/backend/public/build
+/backend/database/*.sqlite
+.phpunit.result.cache
+.phpunit.cache
+Homestead.json
+Homestead.yaml
+auth.json
+
+# ---- React / Vite frontend ----
+/frontend/dist/
+/frontend/dist-ssr/
 dist/
+dist-ssr/
+build/
 
-# Logs
+# ---- Logs ----
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 *.dtmp
 *.bkp
 
-# OS
+# ---- OS ----
 .DS_Store
 Thumbs.db
 
-# IDE
+# ---- IDE ----
 .vscode/
+!.vscode/extensions.json
 .idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
