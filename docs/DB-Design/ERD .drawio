@@ -118,94 +118,94 @@
         <mxCell id="tickets_fields" value="&lt;div style=&quot;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.55;&quot;&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;PK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;id&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;ticketrefno&lt;/span&gt; &lt;span style=&quot;color:#64748B;font-size:12px;&quot;&gt;UNIQUE&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;subject&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;description&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;categoryid&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;priorityid&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;statusid&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;createdby&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;assignedto&lt;/span&gt; &lt;span style=&quot;color:#64748B;font-size:12px;&quot;&gt;NULL&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;createdat&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;updatedat&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;resolvedat&lt;/span&gt; &lt;span style=&quot;color:#64748B;font-size:12px;&quot;&gt;NULL&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;closedat&lt;/span&gt; &lt;span style=&quot;color:#64748B;font-size:12px;&quot;&gt;NULL&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=12;spacingTop=9;overflow=hidden;" parent="tickets" vertex="1">
           <mxGeometry y="38" width="360" height="343" as="geometry" />
         </mxCell>
-        <mxCell id="kbarticles" value="" style="group;connectable=1;allowArrows=1;recursiveResize=0;" parent="1" vertex="1">
+        <mxCell id="kb_articles" value="" style="group;connectable=1;allowArrows=1;recursiveResize=0;" parent="1" vertex="1">
           <mxGeometry x="1500" y="330" width="310" height="256" as="geometry" />
         </mxCell>
-        <mxCell id="kbarticles_body" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0B3B66;strokeWidth=1.6;arcSize=6;shadow=0;" parent="kbarticles" vertex="1">
+        <mxCell id="kb_articles_body" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0B3B66;strokeWidth=1.6;arcSize=6;shadow=0;" parent="kb_articles" vertex="1">
           <mxGeometry width="310" height="256" as="geometry" />
         </mxCell>
-        <mxCell id="kbarticles_header" value="kbarticles" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B3B66;strokeWidth=1.6;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;arcSize=6;" parent="kbarticles" vertex="1">
+        <mxCell id="kb_articles_header" value="kbarticles" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B3B66;strokeWidth=1.6;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;arcSize=6;" parent="kb_articles" vertex="1">
           <mxGeometry width="310" height="38" as="geometry" />
         </mxCell>
-        <mxCell id="kbarticles_mask" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B5FA5;strokeWidth=0;" parent="kbarticles" vertex="1">
+        <mxCell id="kb_articles_mask" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B5FA5;strokeWidth=0;" parent="kb_articles" vertex="1">
           <mxGeometry x="1" y="30" width="308" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="kbarticles_header_line" value="" style="shape=line;html=1;strokeColor=#0B3B66;strokeWidth=1.6;" parent="kbarticles" vertex="1">
+        <mxCell id="kb_articles_header_line" value="" style="shape=line;html=1;strokeColor=#0B3B66;strokeWidth=1.6;" parent="kb_articles" vertex="1">
           <mxGeometry y="38" width="310" as="geometry" />
         </mxCell>
-        <mxCell id="kbarticles_fields" value="&lt;div style=&quot;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.55;&quot;&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;PK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;id&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;categoryid&lt;/span&gt; &lt;span style=&quot;color:#64748B;font-size:12px;&quot;&gt;NULL&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;createdby&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;title&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;content&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;status&lt;/span&gt; &lt;span style=&quot;color:#64748B;font-size:12px;&quot;&gt;ENUM&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;createdat&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;updatedat&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=12;spacingTop=9;overflow=hidden;" parent="kbarticles" vertex="1">
+        <mxCell id="kb_articles_fields" value="&lt;div style=&quot;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.55;&quot;&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;PK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;id&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;categoryid&lt;/span&gt; &lt;span style=&quot;color:#64748B;font-size:12px;&quot;&gt;NULL&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;createdby&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;title&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;content&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;status&lt;/span&gt; &lt;span style=&quot;color:#64748B;font-size:12px;&quot;&gt;ENUM&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;createdat&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;updatedat&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=12;spacingTop=9;overflow=hidden;" parent="kb_articles" vertex="1">
           <mxGeometry y="38" width="310" height="218" as="geometry" />
         </mxCell>
-        <mxCell id="passwordresets" value="" style="group;connectable=1;allowArrows=1;recursiveResize=0;" parent="1" vertex="1">
+        <mxCell id="password_resets" value="" style="group;connectable=1;allowArrows=1;recursiveResize=0;" parent="1" vertex="1">
           <mxGeometry x="70" y="850" width="315" height="206" as="geometry" />
         </mxCell>
-        <mxCell id="passwordresets_body" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0B3B66;strokeWidth=1.6;arcSize=6;shadow=0;" parent="passwordresets" vertex="1">
+        <mxCell id="password_resets_body" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0B3B66;strokeWidth=1.6;arcSize=6;shadow=0;" parent="password_resets" vertex="1">
           <mxGeometry width="315" height="206" as="geometry" />
         </mxCell>
-        <mxCell id="passwordresets_header" value="passwordresets" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B3B66;strokeWidth=1.6;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;arcSize=6;" parent="passwordresets" vertex="1">
+        <mxCell id="password_resets_header" value="passwordresets" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B3B66;strokeWidth=1.6;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;arcSize=6;" parent="password_resets" vertex="1">
           <mxGeometry width="315" height="38" as="geometry" />
         </mxCell>
-        <mxCell id="passwordresets_mask" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B5FA5;strokeWidth=0;" parent="passwordresets" vertex="1">
+        <mxCell id="password_resets_mask" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B5FA5;strokeWidth=0;" parent="password_resets" vertex="1">
           <mxGeometry x="1" y="30" width="313" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="passwordresets_header_line" value="" style="shape=line;html=1;strokeColor=#0B3B66;strokeWidth=1.6;" parent="passwordresets" vertex="1">
+        <mxCell id="password_resets_header_line" value="" style="shape=line;html=1;strokeColor=#0B3B66;strokeWidth=1.6;" parent="password_resets" vertex="1">
           <mxGeometry y="38" width="315" as="geometry" />
         </mxCell>
-        <mxCell id="passwordresets_fields" value="&lt;div style=&quot;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.55;&quot;&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;PK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;id&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;userid&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;tokenhash&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;expiresat&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;usedat&lt;/span&gt; &lt;span style=&quot;color:#64748B;font-size:12px;&quot;&gt;NULL&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;createdat&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=12;spacingTop=9;overflow=hidden;" parent="passwordresets" vertex="1">
+        <mxCell id="password_resets_fields" value="&lt;div style=&quot;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.55;&quot;&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;PK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;id&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;userid&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;tokenhash&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;expiresat&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;usedat&lt;/span&gt; &lt;span style=&quot;color:#64748B;font-size:12px;&quot;&gt;NULL&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;createdat&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=12;spacingTop=9;overflow=hidden;" parent="password_resets" vertex="1">
           <mxGeometry y="38" width="315" height="168" as="geometry" />
         </mxCell>
-        <mxCell id="ticketcomments" value="" style="group;connectable=1;allowArrows=1;recursiveResize=0;" parent="1" vertex="1">
+        <mxCell id="ticket_comments" value="" style="group;connectable=1;allowArrows=1;recursiveResize=0;" parent="1" vertex="1">
           <mxGeometry x="445" y="850" width="315" height="206" as="geometry" />
         </mxCell>
-        <mxCell id="ticketcomments_body" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0B3B66;strokeWidth=1.6;arcSize=6;shadow=0;" parent="ticketcomments" vertex="1">
+        <mxCell id="ticket_comments_body" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0B3B66;strokeWidth=1.6;arcSize=6;shadow=0;" parent="ticket_comments" vertex="1">
           <mxGeometry width="315" height="206" as="geometry" />
         </mxCell>
-        <mxCell id="ticketcomments_header" value="ticketcomments" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B3B66;strokeWidth=1.6;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;arcSize=6;" parent="ticketcomments" vertex="1">
+        <mxCell id="ticket_comments_header" value="ticketcomments" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B3B66;strokeWidth=1.6;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;arcSize=6;" parent="ticket_comments" vertex="1">
           <mxGeometry width="315" height="38" as="geometry" />
         </mxCell>
-        <mxCell id="ticketcomments_mask" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B5FA5;strokeWidth=0;" parent="ticketcomments" vertex="1">
+        <mxCell id="ticket_comments_mask" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B5FA5;strokeWidth=0;" parent="ticket_comments" vertex="1">
           <mxGeometry x="1" y="30" width="313" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="ticketcomments_header_line" value="" style="shape=line;html=1;strokeColor=#0B3B66;strokeWidth=1.6;" parent="ticketcomments" vertex="1">
+        <mxCell id="ticket_comments_header_line" value="" style="shape=line;html=1;strokeColor=#0B3B66;strokeWidth=1.6;" parent="ticket_comments" vertex="1">
           <mxGeometry y="38" width="315" as="geometry" />
         </mxCell>
-        <mxCell id="ticketcomments_fields" value="&lt;div style=&quot;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.55;&quot;&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;PK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;id&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;ticketid&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;userid&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;commenttext&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;isinternal&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;createdat&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=12;spacingTop=9;overflow=hidden;" parent="ticketcomments" vertex="1">
+        <mxCell id="ticket_comments_fields" value="&lt;div style=&quot;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.55;&quot;&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;PK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;id&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;ticketid&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;userid&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;commenttext&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;isinternal&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;createdat&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=12;spacingTop=9;overflow=hidden;" parent="ticket_comments" vertex="1">
           <mxGeometry y="38" width="315" height="168" as="geometry" />
         </mxCell>
-        <mxCell id="ticketattachments" value="" style="group;connectable=1;allowArrows=1;recursiveResize=0;" parent="1" vertex="1">
+        <mxCell id="ticket_attachments" value="" style="group;connectable=1;allowArrows=1;recursiveResize=0;" parent="1" vertex="1">
           <mxGeometry x="820" y="850" width="325" height="256" as="geometry" />
         </mxCell>
-        <mxCell id="ticketattachments_body" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0B3B66;strokeWidth=1.6;arcSize=6;shadow=0;" parent="ticketattachments" vertex="1">
+        <mxCell id="ticket_attachments_body" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0B3B66;strokeWidth=1.6;arcSize=6;shadow=0;" parent="ticket_attachments" vertex="1">
           <mxGeometry width="325" height="256" as="geometry" />
         </mxCell>
-        <mxCell id="ticketattachments_header" value="ticketattachments" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B3B66;strokeWidth=1.6;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;arcSize=6;" parent="ticketattachments" vertex="1">
+        <mxCell id="ticket_attachments_header" value="ticketattachments" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B3B66;strokeWidth=1.6;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;arcSize=6;" parent="ticket_attachments" vertex="1">
           <mxGeometry width="325" height="38" as="geometry" />
         </mxCell>
-        <mxCell id="ticketattachments_mask" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B5FA5;strokeWidth=0;" parent="ticketattachments" vertex="1">
+        <mxCell id="ticket_attachments_mask" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B5FA5;strokeWidth=0;" parent="ticket_attachments" vertex="1">
           <mxGeometry x="1" y="30" width="323" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="ticketattachments_header_line" value="" style="shape=line;html=1;strokeColor=#0B3B66;strokeWidth=1.6;" parent="ticketattachments" vertex="1">
+        <mxCell id="ticket_attachments_header_line" value="" style="shape=line;html=1;strokeColor=#0B3B66;strokeWidth=1.6;" parent="ticket_attachments" vertex="1">
           <mxGeometry y="38" width="325" as="geometry" />
         </mxCell>
-        <mxCell id="ticketattachments_fields" value="&lt;div style=&quot;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.55;&quot;&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;PK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;id&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;ticketid&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;uploadedby&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;filename&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;filepath&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;filesize&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;filetype&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;uploadedat&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=12;spacingTop=9;overflow=hidden;" parent="ticketattachments" vertex="1">
+        <mxCell id="ticket_attachments_fields" value="&lt;div style=&quot;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.55;&quot;&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;PK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;id&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;ticketid&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;uploadedby&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;filename&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;filepath&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;filesize&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;filetype&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;uploadedat&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=12;spacingTop=9;overflow=hidden;" parent="ticket_attachments" vertex="1">
           <mxGeometry y="38" width="325" height="218" as="geometry" />
         </mxCell>
-        <mxCell id="assignmenthistories" value="" style="group;connectable=1;allowArrows=1;recursiveResize=0;" parent="1" vertex="1">
+        <mxCell id="assignment_history" value="" style="group;connectable=1;allowArrows=1;recursiveResize=0;" parent="1" vertex="1">
           <mxGeometry x="1210" y="850" width="345" height="231" as="geometry" />
         </mxCell>
-        <mxCell id="assignmenthistories_body" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0B3B66;strokeWidth=1.6;arcSize=6;shadow=0;" parent="assignmenthistories" vertex="1">
+        <mxCell id="assignment_history_body" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0B3B66;strokeWidth=1.6;arcSize=6;shadow=0;" parent="assignment_history" vertex="1">
           <mxGeometry width="345" height="231" as="geometry" />
         </mxCell>
-        <mxCell id="assignmenthistories_header" value="assignmenthistories" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B3B66;strokeWidth=1.6;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;arcSize=6;" parent="assignmenthistories" vertex="1">
+        <mxCell id="assignment_history_header" value="assignmenthistory" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B3B66;strokeWidth=1.6;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;arcSize=6;" parent="assignment_history" vertex="1">
           <mxGeometry width="345" height="38" as="geometry" />
         </mxCell>
-        <mxCell id="assignmenthistories_mask" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B5FA5;strokeWidth=0;" parent="assignmenthistories" vertex="1">
+        <mxCell id="assignment_history_mask" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B5FA5;strokeWidth=0;" parent="assignment_history" vertex="1">
           <mxGeometry x="1" y="30" width="343" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="assignmenthistories_header_line" value="" style="shape=line;html=1;strokeColor=#0B3B66;strokeWidth=1.6;" parent="assignmenthistories" vertex="1">
+        <mxCell id="assignment_history_header_line" value="" style="shape=line;html=1;strokeColor=#0B3B66;strokeWidth=1.6;" parent="assignment_history" vertex="1">
           <mxGeometry y="38" width="345" as="geometry" />
         </mxCell>
-        <mxCell id="assignmenthistories_fields" value="&lt;div style=&quot;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.55;&quot;&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;PK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;id&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;ticketid&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;assignedfrom&lt;/span&gt; &lt;span style=&quot;color:#64748B;font-size:12px;&quot;&gt;NULL&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;assignedto&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;assignedby&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;notes&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;assignedat&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=12;spacingTop=9;overflow=hidden;" parent="assignmenthistories" vertex="1">
+        <mxCell id="assignment_history_fields" value="&lt;div style=&quot;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.55;&quot;&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;PK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;id&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;ticketid&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;assignedfrom&lt;/span&gt; &lt;span style=&quot;color:#64748B;font-size:12px;&quot;&gt;NULL&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;assignedto&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;assignedby&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;notes&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;assignedat&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=12;spacingTop=9;overflow=hidden;" parent="assignment_history" vertex="1">
           <mxGeometry y="38" width="345" height="193" as="geometry" />
         </mxCell>
         <mxCell id="notifications" value="" style="group;connectable=1;allowArrows=1;recursiveResize=0;" parent="1" vertex="1">
@@ -226,25 +226,25 @@
         <mxCell id="notifications_fields" value="&lt;div style=&quot;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.55;&quot;&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;PK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;id&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;userid&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;ticketid&lt;/span&gt; &lt;span style=&quot;color:#64748B;font-size:12px;&quot;&gt;NULL&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;message&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;type&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;isread&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;createdat&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=12;spacingTop=9;overflow=hidden;" parent="notifications" vertex="1">
           <mxGeometry y="38" width="315" height="193" as="geometry" />
         </mxCell>
-        <mxCell id="activitylogs" value="" style="group;connectable=1;allowArrows=1;recursiveResize=0;" parent="1" vertex="1">
+        <mxCell id="activity_logs" value="" style="group;connectable=1;allowArrows=1;recursiveResize=0;" parent="1" vertex="1">
           <mxGeometry x="1815" y="330" width="315" height="256" as="geometry" />
         </mxCell>
-        <mxCell id="activitylogs_body" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0B3B66;strokeWidth=1.6;arcSize=6;shadow=0;" parent="activitylogs" vertex="1">
+        <mxCell id="activity_logs_body" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#0B3B66;strokeWidth=1.6;arcSize=6;shadow=0;" parent="activity_logs" vertex="1">
           <mxGeometry width="315" height="256" as="geometry" />
         </mxCell>
-        <mxCell id="activitylogs_header" value="activitylogs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B3B66;strokeWidth=1.6;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;arcSize=6;" parent="activitylogs" vertex="1">
+        <mxCell id="activity_logs_header" value="activitylogs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B3B66;strokeWidth=1.6;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;arcSize=6;" parent="activity_logs" vertex="1">
           <mxGeometry width="315" height="38" as="geometry" />
         </mxCell>
-        <mxCell id="activitylogs_mask" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B5FA5;strokeWidth=0;" parent="activitylogs" vertex="1">
+        <mxCell id="activity_logs_mask" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0B5FA5;strokeColor=#0B5FA5;strokeWidth=0;" parent="activity_logs" vertex="1">
           <mxGeometry x="1" y="30" width="313" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="activitylogs_header_line" value="" style="shape=line;html=1;strokeColor=#0B3B66;strokeWidth=1.6;" parent="activitylogs" vertex="1">
+        <mxCell id="activity_logs_header_line" value="" style="shape=line;html=1;strokeColor=#0B3B66;strokeWidth=1.6;" parent="activity_logs" vertex="1">
           <mxGeometry y="38" width="315" as="geometry" />
         </mxCell>
-        <mxCell id="activitylogs_fields" value="&lt;div style=&quot;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.55;&quot;&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;PK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;id&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;userid&lt;/span&gt; &lt;span style=&quot;color:#64748B;font-size:12px;&quot;&gt;NULL&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;action&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;entitytype&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;entityid&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;details&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;ipaddress&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;createdat&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=12;spacingTop=9;overflow=hidden;" parent="activitylogs" vertex="1">
+        <mxCell id="activity_logs_fields" value="&lt;div style=&quot;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.55;&quot;&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;PK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;id&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;color:#0F2A4A;font-weight:bold;&quot;&gt;FK&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;userid&lt;/span&gt; &lt;span style=&quot;color:#64748B;font-size:12px;&quot;&gt;NULL&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;action&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;entitytype&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;entityid&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;details&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;ipaddress&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:35px;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color:#111827;&quot;&gt;createdat&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;spacingLeft=12;spacingTop=9;overflow=hidden;" parent="activity_logs" vertex="1">
           <mxGeometry y="38" width="315" height="218" as="geometry" />
         </mxCell>
-        <mxCell id="edge_9" value="1:N roleid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=0.5;exitY=1;entryX=0.5;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="roles" target="users" edge="1">
+        <mxCell id="edge_9" value="1:N role_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=0.5;exitY=1;entryX=0.5;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="roles" target="users" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="202" y="330" />
@@ -252,7 +252,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="edge_10" value="1:N categoryid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=0.5;exitY=1;entryX=0.18;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="categories" target="tickets" edge="1">
+        <mxCell id="edge_10" value="1:N category_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=0.5;exitY=1;entryX=0.18;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="categories" target="tickets" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="558" y="320" />
@@ -260,7 +260,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="edge_11" value="1:N priorityid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=0.5;exitY=1;entryX=0.5;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="priorities" target="tickets" edge="1">
+        <mxCell id="edge_11" value="1:N priority_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=0.5;exitY=1;entryX=0.5;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="priorities" target="tickets" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="898" y="320" />
@@ -268,7 +268,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="edge_12" value="1:N statusid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=0.5;exitY=1;entryX=0.82;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="statuses" target="tickets" edge="1">
+        <mxCell id="edge_12" value="1:N status_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=0.5;exitY=1;entryX=0.82;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="statuses" target="tickets" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="1230" y="320" />
@@ -276,7 +276,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="edge_13" value="1:N createdby" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=1;exitY=0.38;entryX=0;entryY=0.42;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="users" target="tickets" edge="1">
+        <mxCell id="edge_13" value="1:N created_by" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=1;exitY=0.38;entryX=0;entryY=0.42;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="users" target="tickets" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="520" y="500" />
@@ -284,7 +284,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="edge_14" value="1:N assignedto" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=1;exitY=0.58;entryX=0;entryY=0.55;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="users" target="tickets" edge="1">
+        <mxCell id="edge_14" value="1:N assigned_to" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=1;exitY=0.58;entryX=0;entryY=0.55;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="users" target="tickets" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="560" y="590" />
@@ -292,7 +292,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="edge_15" value="1:N ticketid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=0.15;exitY=1;entryX=0.5;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="tickets" target="ticketcomments" edge="1">
+        <mxCell id="edge_15" value="1:N ticket_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=0.15;exitY=1;entryX=0.5;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="tickets" target="ticket_comments" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="744" y="805" />
@@ -300,7 +300,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="edge_16" value="1:N ticketid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=0.45;exitY=1;entryX=0.5;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="tickets" target="ticketattachments" edge="1">
+        <mxCell id="edge_16" value="1:N ticket_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=0.45;exitY=1;entryX=0.5;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="tickets" target="ticket_attachments" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="852" y="805" />
@@ -308,7 +308,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="edge_17" value="1:N ticketid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=0.75;exitY=1;entryX=0.5;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="tickets" target="assignmenthistories" edge="1">
+        <mxCell id="edge_17" value="1:N ticket_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=0.75;exitY=1;entryX=0.5;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="tickets" target="assignment_history" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="960" y="805" />
@@ -316,7 +316,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="edge_18" value="1:N ticketid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=1;exitY=0.7;entryX=0.5;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="tickets" target="notifications" edge="1">
+        <mxCell id="edge_18" value="1:N ticket_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=1;exitY=0.7;entryX=0.5;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="tickets" target="notifications" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="1160" y="755" />
@@ -324,21 +324,21 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="edge_19" value="1:N userid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=0.5;exitY=1;entryX=0.5;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;dashed=1;dashPattern=8 4;" parent="1" source="users" target="passwordresets" edge="1">
+        <mxCell id="edge_19" value="1:N user_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=0.5;exitY=1;entryX=0.5;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;dashed=1;dashPattern=8 4;" parent="1" source="users" target="password_resets" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="228" y="805" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="edge_20" value="1:N userid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=1;exitY=0.74;entryX=0.08;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;dashed=1;dashPattern=8 4;" parent="1" source="users" target="ticketcomments" edge="1">
+        <mxCell id="edge_20" value="1:N user_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=1;exitY=0.74;entryX=0.08;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;dashed=1;dashPattern=8 4;" parent="1" source="users" target="ticket_comments" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="470" y="611" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="edge_21" value="1:N uploadedby" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=1;exitY=0.84;entryX=0.08;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;dashed=1;dashPattern=8 4;" parent="1" source="users" target="ticketattachments" edge="1">
+        <mxCell id="edge_21" value="1:N uploaded_by" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=1;exitY=0.84;entryX=0.08;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;dashed=1;dashPattern=8 4;" parent="1" source="users" target="ticket_attachments" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="445" y="642" />
@@ -348,7 +348,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="edge_22" value="1:N assignedfrom / assignedto / assignedby" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=0.75;exitY=1;entryX=0.08;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;dashed=1;dashPattern=8 4;exitDx=0;exitDy=0;" parent="1" source="users_fields" target="assignmenthistories" edge="1">
+        <mxCell id="edge_22" value="1:N assigned_from / assigned_to / assigned_by" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=0.75;exitY=1;entryX=0.08;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;dashed=1;dashPattern=8 4;exitDx=0;exitDy=0;" parent="1" source="users_fields" target="assignment_history" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="306" y="780" />
@@ -356,7 +356,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="edge_23" value="1:N userid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=0.9;exitY=1.008;entryX=0.08;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;dashed=1;dashPattern=8 4;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="users_fields" target="notifications" edge="1">
+        <mxCell id="edge_23" value="1:N user_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=0.9;exitY=1.008;entryX=0.08;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;dashed=1;dashPattern=8 4;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="users_fields" target="notifications" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="354" y="710" />
@@ -364,7 +364,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="edge_24" value="1:N userid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=1;exitY=0.18;entryX=0.5;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;dashed=1;dashPattern=8 4;entryDx=0;entryDy=0;" parent="1" source="users" target="activitylogs_header" edge="1">
+        <mxCell id="edge_24" value="1:N user_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=1;exitY=0.18;entryX=0.5;entryY=0;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;dashed=1;dashPattern=8 4;entryDx=0;entryDy=0;" parent="1" source="users" target="activity_logs_header" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="385" y="430" />
@@ -375,7 +375,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="edge_25" value="1:N createdby" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=1;exitY=0.26;entryX=0;entryY=0.5;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;dashed=1;dashPattern=8 4;entryDx=0;entryDy=0;" parent="1" source="users" target="kbarticles_fields" edge="1">
+        <mxCell id="edge_25" value="1:N created_by" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=1;exitY=0.26;entryX=0;entryY=0.5;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;dashed=1;dashPattern=8 4;entryDx=0;entryDy=0;" parent="1" source="users" target="kb_articles_fields" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="385" y="455" />
@@ -386,7 +386,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="edge_26" value="1:N categoryid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=1;exitY=0.5;entryX=0;entryY=0.2;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="categories" target="kbarticles" edge="1">
+        <mxCell id="edge_26" value="1:N category_id" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#153E68;strokeWidth=2;startArrow=ERone;startFill=0;endArrow=ERmany;endFill=0;exitX=1;exitY=0.5;entryX=0;entryY=0.2;fontSize=12;fontColor=#0F2A4A;labelBackgroundColor=#FFFFFF;" parent="1" source="categories" target="kb_articles" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="695" y="195" />
