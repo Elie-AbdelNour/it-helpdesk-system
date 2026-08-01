@@ -20,9 +20,66 @@ class Ticket extends Model
         'statusid',
         'createdby',
         'assignedto',
+        'targetresolutionhours',
+        'resolutiondueat',
         'resolvedat',
         'closedat',
     ];
+
+    protected $appends = [
+        'actualresolutionminutes',
+        'elapsedresolutionminutes',
+        'resolutionstate',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'targetresolutionhours' => 'integer',
+            'createdat' => 'datetime',
+            'updatedat' => 'datetime',
+            'resolutiondueat' => 'datetime',
+            'resolvedat' => 'datetime',
+            'closedat' => 'datetime',
+        ];
+    }
+
+    public function getActualResolutionMinutesAttribute(): ?int
+    {
+        if (! $this->createdat || ! $this->resolvedat) {
+            return null;
+        }
+
+        return (int) $this->createdat->diffInMinutes($this->resolvedat);
+    }
+
+    public function getElapsedResolutionMinutesAttribute(): ?int
+    {
+        if (! $this->createdat) {
+            return null;
+        }
+
+        return (int) $this->createdat->diffInMinutes($this->resolvedat ?? now());
+    }
+
+    public function getResolutionStateAttribute(): string
+    {
+        if ($this->resolvedat) {
+            if (! $this->targetresolutionhours) {
+                return 'resolved';
+            }
+
+            return $this->actualresolutionminutes <= ($this->targetresolutionhours * 60)
+                ? 'resolved_within_target'
+                : 'resolved_late';
+        }
+
+        if ($this->resolutiondueat && now()->greaterThan($this->resolutiondueat)) {
+            return 'overdue';
+        }
+
+        return 'open';
+    }
 
     public function category(): BelongsTo
     {
@@ -62,5 +119,10 @@ class Ticket extends Model
     public function assignmentHistories(): HasMany
     {
         return $this->hasMany(AssignmentHistory::class, 'ticketid');
+    }
+
+    public function statusHistories(): HasMany
+    {
+        return $this->hasMany(TicketStatusHistory::class, 'ticketid');
     }
 }

@@ -29,6 +29,26 @@ class TicketPolicy
         return $this->isManager($user) || $ticket->createdby === $user->id;
     }
 
+    public function assign(User $user, Ticket $ticket): bool
+    {
+        return $this->isManager($user);
+    }
+
+    public function changeStatus(User $user, Ticket $ticket): bool
+    {
+        return $this->isManager($user);
+    }
+
+    public function comment(User $user, Ticket $ticket): bool
+    {
+        return $this->view($user, $ticket);
+    }
+
+    public function viewHistory(User $user, Ticket $ticket): bool
+    {
+        return $this->view($user, $ticket);
+    }
+
     public function delete(User $user, Ticket $ticket): bool
     {
         return $user->role->rolename === 'Admin' || $ticket->createdby === $user->id;

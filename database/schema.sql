@@ -16,9 +16,10 @@ CREATE TABLE categories (
 ) ENGINE=InnoDB;
 
 CREATE TABLE priorities (
-    id     INT AUTO_INCREMENT PRIMARY KEY,
-    name   VARCHAR(20) NOT NULL UNIQUE,
-    level  TINYINT NOT NULL
+    id                     INT AUTO_INCREMENT PRIMARY KEY,
+    name                   VARCHAR(20) NOT NULL UNIQUE,
+    level                  TINYINT NOT NULL,
+    targetresolutionhours  SMALLINT UNSIGNED NULL
 ) ENGINE=InnoDB;
 
 CREATE TABLE statuses (
@@ -63,8 +64,10 @@ CREATE TABLE tickets (
     statusid     INT NOT NULL,
     createdby    INT NOT NULL,
     assignedto   INT NULL,
+    targetresolutionhours  SMALLINT UNSIGNED NULL,
     createdat    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updatedat    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    resolutiondueat  DATETIME NULL,
     resolvedat   DATETIME NULL,
     closedat     DATETIME NULL,
     CONSTRAINT fkticketscategory FOREIGN KEY (categoryid) REFERENCES categories(id),
@@ -80,6 +83,26 @@ CREATE INDEX idxticketscategory ON tickets(categoryid);
 CREATE INDEX idxticketscreator  ON tickets(createdby);
 CREATE INDEX idxticketsagent    ON tickets(assignedto);
 CREATE INDEX idxticketscreated  ON tickets(createdat);
+CREATE INDEX idxticketsresolutiondue ON tickets(resolutiondueat);
+CREATE INDEX idxticketsresolved ON tickets(resolvedat);
+CREATE INDEX idxticketsclosed ON tickets(closedat);
+
+CREATE TABLE ticketstatushistories (
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    ticketid      INT NOT NULL,
+    fromstatusid  INT NULL,
+    tostatusid    INT NOT NULL,
+    changedby     INT NOT NULL,
+    notes         VARCHAR(500),
+    changedat     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fkstatushistoriesticket FOREIGN KEY (ticketid)     REFERENCES tickets(id) ON DELETE CASCADE,
+    CONSTRAINT fkstatushistoriesfrom   FOREIGN KEY (fromstatusid) REFERENCES statuses(id),
+    CONSTRAINT fkstatushistoriesto     FOREIGN KEY (tostatusid)   REFERENCES statuses(id),
+    CONSTRAINT fkstatushistoriesuser   FOREIGN KEY (changedby)    REFERENCES users(id)
+) ENGINE=InnoDB;
+
+CREATE INDEX idxstatushistoriesticket ON ticketstatushistories(ticketid);
+CREATE INDEX idxstatushistorieschanged ON ticketstatushistories(changedat);
 
 CREATE TABLE ticketcomments (
     id           INT AUTO_INCREMENT PRIMARY KEY,
@@ -153,6 +176,7 @@ CREATE TABLE activitylogs (
 
 CREATE INDEX idxlogsuser ON activitylogs(userid);
 CREATE INDEX idxlogsentity ON activitylogs(entitytype, entityid);
+CREATE INDEX idxlogscreated ON activitylogs(createdat);
 
 CREATE TABLE kbarticles (
     id          INT AUTO_INCREMENT PRIMARY KEY,

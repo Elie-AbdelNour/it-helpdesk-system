@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { createTicket, listCategories, listPriorities } from '../api/tickets';
 
 export default function TicketCreate() {
@@ -109,7 +109,7 @@ export default function TicketCreate() {
             >
               {priorities.map((p) => (
                 <option key={p.id} value={p.id}>
-                  {p.name}
+                  {p.name} ({p.targetresolutionhours}h target)
                 </option>
               ))}
             </select>

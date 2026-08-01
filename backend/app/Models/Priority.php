@@ -8,5 +8,12 @@ class Priority extends Model
 {
     public $timestamps = false;
 
-    protected $fillable = ['name', 'level'];
+    protected $fillable = ['name', 'level', 'targetresolutionhours'];
+
+    protected function casts(): array
+    {
+        return [
+            'targetresolutionhours' => 'integer',
+        ];
+    }
 }
