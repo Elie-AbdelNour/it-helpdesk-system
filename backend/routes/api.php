@@ -18,6 +18,7 @@ Route::middleware('auth:sanctum')->group(function () {
     })->middleware('role:Admin,Manager');
 
     Route::post('/tickets/{ticket}/assign', [TicketController::class, 'assign']);
+    Route::post('/tickets/{ticket}/escalate', [TicketController::class, 'escalate']);
     Route::post('/tickets/{ticket}/status', [TicketController::class, 'changeStatus']);
     Route::post('/tickets/{ticket}/comments', [TicketController::class, 'comment']);
     Route::get('/tickets/{ticket}/history', [TicketController::class, 'history']);

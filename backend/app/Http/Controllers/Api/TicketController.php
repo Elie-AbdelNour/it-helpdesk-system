@@ -203,6 +203,81 @@ class TicketController extends Controller
         return $this->loadTicket($ticket, $request);
     }
 
+    public function escalate(Request $request, Ticket $ticket)
+    {
+        $this->authorize('escalate', $ticket);
+
+        $validated = $request->validate([
+            'priorityid' => ['nullable', 'integer', 'exists:priorities,id'],
+            'assignedto' => ['nullable', 'integer', 'exists:users,id'],
+            'notes' => ['required', 'string', 'max:500'],
+        ]);
+
+        if (empty($validated['priorityid']) && empty($validated['assignedto'])) {
+            throw ValidationException::withMessages([
+                'priorityid' => ['Escalation requires a higher priority, a new assignee, or both.'],
+            ]);
+        }
+
+        $updates = [];
+        $summary = [];
+
+        if (! empty($validated['priorityid'])) {
+            $currentPriority = $ticket->priority;
+            $newPriority = Priority::findOrFail($validated['priorityid']);
+
+            if ($newPriority->level <= $currentPriority->level) {
+                throw ValidationException::withMessages([
+                    'priorityid' => ['Escalation must move the ticket to a higher priority than its current one.'],
+                ]);
+            }
+
+            $updates['priorityid'] = $newPriority->id;
+            $updates['targetresolutionhours'] = $newPriority->targetresolutionhours;
+            $updates['resolutiondueat'] = $this->calculateDueAt(
+                $ticket->createdat ?? now(),
+                $newPriority->targetresolutionhours,
+            );
+            $summary[] = "priority {$currentPriority->name} to {$newPriority->name}";
+        }
+
+        $agent = null;
+        $assignedFrom = null;
+        if (! empty($validated['assignedto'])) {
+            $agent = User::with('role')->findOrFail($validated['assignedto']);
+            if (! $this->isManagingUser($agent)) {
+                throw ValidationException::withMessages([
+                    'assignedto' => ['Tickets can only be escalated to an admin, manager, or IT support agent.'],
+                ]);
+            }
+
+            $assignedFrom = $ticket->assignedto;
+            $updates['assignedto'] = $agent->id;
+            $summary[] = "reassigned to {$agent->fullname}";
+        }
+
+        $ticket->update($updates);
+
+        if ($agent) {
+            AssignmentHistory::create([
+                'ticketid' => $ticket->id,
+                'assignedfrom' => $assignedFrom,
+                'assignedto' => $agent->id,
+                'assignedby' => $request->user()->id,
+                'notes' => 'Escalation: '.$validated['notes'],
+            ]);
+        }
+
+        $this->recordActivity(
+            $request,
+            $ticket,
+            'ticket_escalated',
+            'Escalated ('.implode(', ', $summary).'): '.$validated['notes'],
+        );
+
+        return $this->loadTicket($ticket->fresh(), $request);
+    }
+
     public function changeStatus(Request $request, Ticket $ticket)
     {
         $this->authorize('changeStatus', $ticket);
@@ -220,8 +295,12 @@ class TicketController extends Controller
         }
 
         $updates = ['statusid' => $toStatus->id];
-        if (in_array($toStatus->name, self::FINAL_STATUSES, true) && ! $ticket->resolvedat) {
-            $updates['resolvedat'] = now();
+        if (in_array($toStatus->name, self::FINAL_STATUSES, true)) {
+            if (! $ticket->resolvedat) {
+                $updates['resolvedat'] = now();
+            }
+        } elseif ($ticket->resolvedat) {
+            $updates['resolvedat'] = null;
         }
         if ($toStatus->name === 'Closed') {
             $updates['closedat'] = now();

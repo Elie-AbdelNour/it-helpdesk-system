@@ -5,6 +5,7 @@ import {
   addTicketComment,
   assignTicket,
   deleteTicket,
+  escalateTicket,
   getTicket,
   getTicketHistory,
   listAssignableUsers,
@@ -66,6 +67,7 @@ export default function TicketDetail() {
   const [form, setForm] = useState({ subject: '', description: '', categoryid: '', priorityid: '' });
   const [statusForm, setStatusForm] = useState({ statusid: '', notes: '' });
   const [assignmentForm, setAssignmentForm] = useState({ assignedto: '', notes: '' });
+  const [escalationForm, setEscalationForm] = useState({ priorityid: '', assignedto: '', notes: '' });
   const [commentForm, setCommentForm] = useState({ commenttext: '', isinternal: false });
   const [historyFilters, setHistoryFilters] = useState({ datefrom: '', dateto: '' });
   const [errors, setErrors] = useState({});
@@ -189,6 +191,21 @@ export default function TicketDetail() {
     }
   }
 
+  async function handleEscalateSubmit(e) {
+    e.preventDefault();
+    setWorkflowError(null);
+    setSubmitting('escalation');
+    try {
+      const updated = await escalateTicket(id, escalationForm);
+      setEscalationForm({ priorityid: '', assignedto: '', notes: '' });
+      await refreshWorkflow(updated);
+    } catch (err) {
+      setWorkflowError(err.response?.data?.message ?? 'Unable to escalate ticket.');
+    } finally {
+      setSubmitting(null);
+    }
+  }
+
   async function handleCommentSubmit(e) {
     e.preventDefault();
     setWorkflowError(null);
@@ -224,7 +241,8 @@ export default function TicketDetail() {
 
   const isOwner = ticket.creator?.id === user.id;
   const canEdit = isManagingUser || isOwner;
-  const canDelete = user.role?.rolename === 'Admin' || isOwner;
+  const isUntouched = ticket.assignedto === null && ticket.status?.name === 'Open';
+  const canDelete = user.role?.rolename === 'Admin' || (isOwner && isUntouched);
   const resolutionIsLate = ticket.resolutionstate === 'overdue' || ticket.resolutionstate === 'resolved_late';
 
   return (
@@ -421,7 +439,7 @@ export default function TicketDetail() {
       )}
 
       {isManagingUser && (
-        <section className="grid gap-4 md:grid-cols-2">
+        <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <form onSubmit={handleStatusSubmit} className="rounded-lg bg-white p-6 shadow dark:bg-slate-800">
             <h2 className="text-lg font-semibold">Status</h2>
             <div className="mt-4 space-y-3">
@@ -482,6 +500,56 @@ export default function TicketDetail() {
                 className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
               >
                 {submitting === 'assignment' ? 'Assigning...' : 'Assign Ticket'}
+              </button>
+            </div>
+          </form>
+
+          <form onSubmit={handleEscalateSubmit} className="rounded-lg bg-white p-6 shadow dark:bg-slate-800">
+            <h2 className="text-lg font-semibold">Escalate</h2>
+            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+              Raise priority and/or hand off to another agent, with a reason on record.
+            </p>
+            <div className="mt-4 space-y-3">
+              <select
+                value={escalationForm.priorityid}
+                onChange={(e) => setEscalationForm((f) => ({ ...f, priorityid: e.target.value }))}
+                className="w-full rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
+              >
+                <option value="">Keep current priority</option>
+                {priorities
+                  .filter((p) => p.level > (ticket.priority?.level ?? 0))
+                  .map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.name} ({p.targetresolutionhours}h target)
+                    </option>
+                  ))}
+              </select>
+              <select
+                value={escalationForm.assignedto}
+                onChange={(e) => setEscalationForm((f) => ({ ...f, assignedto: e.target.value }))}
+                className="w-full rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
+              >
+                <option value="">Keep current assignee</option>
+                {agents.map((agent) => (
+                  <option key={agent.id} value={agent.id}>
+                    {agent.fullname} ({agent.role?.rolename})
+                  </option>
+                ))}
+              </select>
+              <textarea
+                rows={3}
+                required
+                placeholder="Reason for escalation"
+                value={escalationForm.notes}
+                onChange={(e) => setEscalationForm((f) => ({ ...f, notes: e.target.value }))}
+                className="w-full rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
+              />
+              <button
+                type="submit"
+                disabled={submitting === 'escalation'}
+                className="rounded bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700 disabled:opacity-50"
+              >
+                {submitting === 'escalation' ? 'Escalating...' : 'Escalate Ticket'}
               </button>
             </div>
           </form>

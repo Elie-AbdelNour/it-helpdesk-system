@@ -34,6 +34,11 @@ class TicketPolicy
         return $this->isManager($user);
     }
 
+    public function escalate(User $user, Ticket $ticket): bool
+    {
+        return $this->isManager($user);
+    }
+
     public function changeStatus(User $user, Ticket $ticket): bool
     {
         return $this->isManager($user);
@@ -51,7 +56,18 @@ class TicketPolicy
 
     public function delete(User $user, Ticket $ticket): bool
     {
-        return $user->role->rolename === 'Admin' || $ticket->createdby === $user->id;
+        if ($user->role->rolename === 'Admin') {
+            return true;
+        }
+
+        if ($ticket->createdby !== $user->id) {
+            return false;
+        }
+
+        // Once a ticket has been picked up (assigned or moved out of Open),
+        // deleting it would cascade away the agent's assignment/status/comment
+        // history. Only the untouched, still-Open ticket may be self-deleted.
+        return $ticket->assignedto === null && $ticket->status->name === 'Open';
     }
 
     private function isManager(User $user): bool

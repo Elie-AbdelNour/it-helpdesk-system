@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -34,6 +35,8 @@ class AuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
+        $this->recordActivity($request, $user->id, 'user_registered', 'User registered');
+
         return response()->json(['user' => $user->load('role')], 201);
     }
 
@@ -45,6 +48,13 @@ class AuthController extends Controller
         ]);
 
         if (! Auth::attempt($credentials)) {
+            $this->recordActivity(
+                $request,
+                null,
+                'user_login_failed',
+                'Failed login attempt for '.$credentials['email'],
+            );
+
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
@@ -56,15 +66,21 @@ class AuthController extends Controller
         $user = Auth::user();
         $user->forceFill(['lastloginat' => now()])->save();
 
+        $this->recordActivity($request, $user->id, 'user_login', 'User logged in');
+
         return response()->json(['user' => $user->load('role')]);
     }
 
     public function logout(Request $request)
     {
+        $userId = $request->user()?->id;
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        $this->recordActivity($request, $userId, 'user_logout', 'User logged out');
 
         return response()->noContent();
     }
@@ -72,5 +88,17 @@ class AuthController extends Controller
     public function user(Request $request)
     {
         return response()->json(['user' => $request->user()->load('role')]);
+    }
+
+    private function recordActivity(Request $request, ?int $userId, string $action, string $details): void
+    {
+        ActivityLog::create([
+            'userid' => $userId,
+            'action' => $action,
+            'entitytype' => 'user',
+            'entityid' => $userId,
+            'details' => $details,
+            'ipaddress' => $request->ip(),
+        ]);
     }
 }

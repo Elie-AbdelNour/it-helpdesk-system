@@ -20,6 +20,10 @@ export function assignTicket(id, payload) {
   return client.post(`/api/tickets/${id}/assign`, payload).then((res) => res.data);
 }
 
+export function escalateTicket(id, payload) {
+  return client.post(`/api/tickets/${id}/escalate`, payload).then((res) => res.data);
+}
+
 export function updateTicketStatus(id, payload) {
   return client.post(`/api/tickets/${id}/status`, payload).then((res) => res.data);
 }
