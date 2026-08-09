@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
 use App\Models\AssignmentHistory;
+use App\Models\Notification;
 use App\Models\Priority;
 use App\Models\Status;
 use App\Models\Ticket;
@@ -200,6 +201,8 @@ class TicketController extends Controller
             'Assigned to '.$agent->fullname,
         );
 
+        $this->notifyUser($agent->id, $ticket, "You were assigned to ticket {$ticket->ticketrefno}", 'assignment');
+
         return $this->loadTicket($ticket, $request);
     }
 
@@ -275,6 +278,12 @@ class TicketController extends Controller
             'Escalated ('.implode(', ', $summary).'): '.$validated['notes'],
         );
 
+        if ($agent) {
+            $this->notifyUser($agent->id, $ticket, "Ticket {$ticket->ticketrefno} was escalated to you", 'escalation');
+        } elseif ($ticket->assignedto) {
+            $this->notifyUser((int) $ticket->assignedto, $ticket, "Ticket {$ticket->ticketrefno} was escalated", 'escalation');
+        }
+
         return $this->loadTicket($ticket->fresh(), $request);
     }
 
@@ -326,6 +335,15 @@ class TicketController extends Controller
 
         $this->recordActivity($request, $freshTicket, 'status_updated', $details);
 
+        if ((int) $ticket->createdby !== (int) $request->user()->id) {
+            $this->notifyUser(
+                (int) $ticket->createdby,
+                $freshTicket,
+                "Ticket {$ticket->ticketrefno} status changed to {$toStatus->name}",
+                'status',
+            );
+        }
+
         return $this->loadTicket($freshTicket, $request);
     }
 
@@ -356,6 +374,10 @@ class TicketController extends Controller
             $isInternal ? 'internal_note_added' : 'comment_added',
             $isInternal ? 'Internal note added' : 'Comment added',
         );
+
+        if (! $isInternal) {
+            $this->notifyOtherSide($request->user(), $ticket, "New comment on ticket {$ticket->ticketrefno}", 'comment');
+        }
 
         return response()->json($comment->load('user'), 201);
     }
@@ -468,6 +490,10 @@ class TicketController extends Controller
                     ->latest('createdat');
             },
             'comments.user',
+            'comments.attachments',
+            'comments.attachments.uploader',
+            'attachments' => fn ($query) => $query->latest('uploadedat'),
+            'attachments.uploader',
             'statusHistories' => fn ($query) => $query->latest('changedat'),
             'statusHistories.fromStatus',
             'statusHistories.toStatus',
@@ -524,5 +550,30 @@ class TicketController extends Controller
     private function isManagingUser(User $user): bool
     {
         return in_array($user->role?->rolename, self::MANAGING_ROLES, true);
+    }
+
+    private function notifyOtherSide(User $actor, Ticket $ticket, string $message, string $type): void
+    {
+        $isActorCreator = (int) $actor->id === (int) $ticket->createdby;
+
+        if ($isActorCreator) {
+            if ($ticket->assignedto) {
+                $this->notifyUser((int) $ticket->assignedto, $ticket, $message, $type);
+            }
+
+            return;
+        }
+
+        $this->notifyUser((int) $ticket->createdby, $ticket, $message, $type);
+    }
+
+    private function notifyUser(int $userId, ?Ticket $ticket, string $message, string $type): void
+    {
+        Notification::create([
+            'userid' => $userId,
+            'ticketid' => $ticket?->id,
+            'message' => $message,
+            'type' => $type,
+        ]);
     }
 }

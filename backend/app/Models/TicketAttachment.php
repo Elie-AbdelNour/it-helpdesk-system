@@ -12,11 +12,16 @@ class TicketAttachment extends Model
     const CREATED_AT = 'uploadedat';
     const UPDATED_AT = null;
 
-    protected $fillable = ['ticketid', 'uploadedby', 'filename', 'filepath', 'filesize', 'filetype'];
+    protected $fillable = ['ticketid', 'commentid', 'uploadedby', 'filename', 'filepath', 'filesize', 'filetype'];
 
     public function ticket(): BelongsTo
     {
         return $this->belongsTo(Ticket::class, 'ticketid');
+    }
+
+    public function comment(): BelongsTo
+    {
+        return $this->belongsTo(TicketComment::class, 'commentid');
     }
 
     public function uploader(): BelongsTo

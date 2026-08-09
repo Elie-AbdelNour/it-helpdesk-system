@@ -15,6 +15,10 @@ import {
   updateTicket,
   updateTicketStatus,
 } from '../api/tickets';
+import { uploadAttachment } from '../api/attachments';
+import { IMAGE_EXTENSIONS, validateFile } from '../lib/fileValidation';
+import FileUpload from '../components/FileUpload';
+import AttachmentList from '../components/AttachmentList';
 
 const MANAGING_ROLES = ['Admin', 'Manager', 'IT Support Agent'];
 
@@ -69,6 +73,8 @@ export default function TicketDetail() {
   const [assignmentForm, setAssignmentForm] = useState({ assignedto: '', notes: '' });
   const [escalationForm, setEscalationForm] = useState({ priorityid: '', assignedto: '', notes: '' });
   const [commentForm, setCommentForm] = useState({ commenttext: '', isinternal: false });
+  const [commentImage, setCommentImage] = useState(null);
+  const [commentImageError, setCommentImageError] = useState(null);
   const [historyFilters, setHistoryFilters] = useState({ datefrom: '', dateto: '' });
   const [errors, setErrors] = useState({});
   const [workflowError, setWorkflowError] = useState(null);
@@ -206,13 +212,34 @@ export default function TicketDetail() {
     }
   }
 
+  function handleCommentImageChange(e) {
+    const selected = e.target.files?.[0] ?? null;
+    setCommentImageError(null);
+    setCommentImage(null);
+
+    if (!selected) return;
+
+    const validationError = validateFile(selected, { allowedExtensions: IMAGE_EXTENSIONS });
+    if (validationError) {
+      setCommentImageError(validationError);
+      e.target.value = '';
+      return;
+    }
+
+    setCommentImage(selected);
+  }
+
   async function handleCommentSubmit(e) {
     e.preventDefault();
     setWorkflowError(null);
     setSubmitting('comment');
     try {
-      await addTicketComment(id, commentForm);
+      const comment = await addTicketComment(id, commentForm);
+      if (commentImage) {
+        await uploadAttachment(id, commentImage, comment.id);
+      }
       setCommentForm({ commenttext: '', isinternal: false });
+      setCommentImage(null);
       await refreshWorkflow();
     } catch (err) {
       setWorkflowError(err.response?.data?.message ?? 'Unable to add comment.');
@@ -432,6 +459,22 @@ export default function TicketDetail() {
         </section>
       )}
 
+      <section className="rounded-lg bg-white p-6 shadow dark:bg-slate-800">
+        <h2 className="text-lg font-semibold">Attachments</h2>
+        <div className="mt-4">
+          <FileUpload onUpload={(file) => uploadAttachment(id, file).then(() => refreshWorkflow())} />
+        </div>
+        <div className="mt-4">
+          <AttachmentList
+            ticketId={id}
+            attachments={ticket.attachments?.filter((a) => !a.commentid) ?? []}
+            currentUserId={user.id}
+            canManage={isManagingUser}
+            onChanged={() => refreshWorkflow()}
+          />
+        </div>
+      </section>
+
       {workflowError && (
         <p className="rounded bg-red-100 px-3 py-2 text-sm text-red-700 dark:bg-red-900/40 dark:text-red-300">
           {workflowError}
@@ -567,6 +610,18 @@ export default function TicketDetail() {
             onChange={(e) => setCommentForm((f) => ({ ...f, commenttext: e.target.value }))}
             className="w-full rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
           />
+          <div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleCommentImageChange}
+              className="text-sm text-slate-600 file:mr-3 file:rounded file:border-0 file:bg-slate-200 file:px-3 file:py-1.5 file:text-sm file:font-medium hover:file:bg-slate-300 dark:text-slate-300 dark:file:bg-slate-700 dark:hover:file:bg-slate-600"
+            />
+            {commentImage && (
+              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Attaching: {commentImage.name}</p>
+            )}
+            {commentImageError && <p className="mt-1 text-sm text-red-600">{commentImageError}</p>}
+          </div>
           <div className="flex flex-wrap items-center justify-between gap-3">
             {isManagingUser && (
               <label className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
@@ -603,6 +658,17 @@ export default function TicketDetail() {
                 )}
               </div>
               <p className="mt-1 whitespace-pre-wrap text-sm">{comment.commenttext}</p>
+              {comment.attachments?.length > 0 && (
+                <div className="mt-2">
+                  <AttachmentList
+                    ticketId={id}
+                    attachments={comment.attachments}
+                    currentUserId={user.id}
+                    canManage={isManagingUser}
+                    onChanged={() => refreshWorkflow()}
+                  />
+                </div>
+              )}
             </div>
           ))}
           {ticket.comments?.length === 0 && (

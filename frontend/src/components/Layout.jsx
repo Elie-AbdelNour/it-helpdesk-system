@@ -1,5 +1,6 @@
 import { NavLink, Outlet, useNavigate } from 'react-router';
 import { useAuth } from '../context/AuthContext';
+import NotificationBell from './NotificationBell';
 
 function navClass({ isActive }) {
   return `rounded px-3 py-1.5 text-sm font-medium ${
@@ -32,6 +33,7 @@ export default function Layout() {
           </nav>
 
           <div className="flex items-center gap-3 text-sm">
+            <NotificationBell />
             <span className="text-slate-500 dark:text-slate-400">
               {user?.fullname} <span className="text-xs">({user?.role?.rolename})</span>
             </span>
