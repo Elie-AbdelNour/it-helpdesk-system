@@ -21,9 +21,21 @@ export function AuthProvider({ children }) {
     setUser(res.data.user);
   }
 
-  async function register(fullname, email, password, phone) {
+  async function loginWithOtp(email, code) {
     await ensureCsrfCookie();
-    const res = await client.post('/api/register', { fullname, email, password, phone });
+    const res = await client.post('/api/login/otp/verify', { email, code });
+    setUser(res.data.user);
+  }
+
+  async function register(fullname, email, password, passwordConfirmation, phone) {
+    await ensureCsrfCookie();
+    const res = await client.post('/api/register', {
+      fullname,
+      email,
+      password,
+      password_confirmation: passwordConfirmation,
+      phone,
+    });
     setUser(res.data.user);
   }
 
@@ -33,7 +45,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, loginWithOtp, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

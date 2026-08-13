@@ -30,6 +30,7 @@ class TicketController extends Controller
             'priorityid' => ['nullable', 'integer', 'exists:priorities,id'],
             'statusid' => ['nullable', 'integer', 'exists:statuses,id'],
             'assignedto' => ['nullable', 'integer', 'exists:users,id'],
+            'unassigned' => ['nullable', 'boolean'],
             'createdfrom' => ['nullable', 'date'],
             'createdto' => ['nullable', 'date', 'after_or_equal:createdfrom'],
             'resolvedfrom' => ['nullable', 'date'],
@@ -59,6 +60,10 @@ class TicketController extends Controller
 
         if ($assignedTo = $validated['assignedto'] ?? null) {
             $query->where('assignedto', $assignedTo);
+        }
+
+        if ($validated['unassigned'] ?? false) {
+            $query->whereNull('assignedto');
         }
 
         $this->applyDateRange($query, 'createdat', $validated['createdfrom'] ?? null, $validated['createdto'] ?? null);

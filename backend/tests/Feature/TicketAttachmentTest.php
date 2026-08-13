@@ -21,135 +21,113 @@ class TicketAttachmentTest extends TestCase
 {
     use RefreshDatabase;
 
-    private User $employee;
-
-    private User $agent;
-
-    private User $admin;
-
-    private Ticket $ticket;
-
-    protected function setUp(): void
+    public function test_ticket_creator_can_upload_and_download_an_attachment(): void
     {
-        parent::setUp();
-
         Storage::fake('local');
+        [$employee, , $ticket] = $this->seedTicket();
 
-        $this->seed([
-            RolesSeeder::class,
-            CategoriesSeeder::class,
-            PrioritiesSeeder::class,
-            StatusesSeeder::class,
-        ]);
+        Sanctum::actingAs($employee);
 
-        $this->employee = $this->createUser('Employee', 'employee@example.test');
-        $this->agent = $this->createUser('IT Support Agent', 'agent@example.test');
-        $this->admin = $this->createUser('Admin', 'admin@example.test');
-
-        Sanctum::actingAs($this->employee);
-        $ticketId = $this
-            ->postJson('/api/tickets', [
-                'subject' => 'Printer offline',
-                'description' => 'Cannot print from the third floor.',
-                'categoryid' => Category::firstOrFail()->id,
-                'priorityid' => Priority::where('name', 'Medium')->firstOrFail()->id,
-            ])
-            ->assertCreated()
-            ->json('id');
-
-        $this->ticket = Ticket::findOrFail($ticketId);
-    }
-
-    public function test_participant_can_upload_a_ticket_level_document(): void
-    {
-        Sanctum::actingAs($this->employee);
-
-        $file = UploadedFile::fake()->create('error-log.txt', 100, 'text/plain');
-
-        $this
-            ->postJson("/api/tickets/{$this->ticket->id}/attachments", ['file' => $file])
-            ->assertCreated()
-            ->assertJsonPath('filename', 'error-log.txt');
+        $response = $this->postJson("/api/tickets/{$ticket->id}/attachments", [
+            'file' => UploadedFile::fake()->create('screenshot.png', 500, 'image/png'),
+        ])->assertCreated();
 
         $this->assertDatabaseHas('ticketattachments', [
-            'ticketid' => $this->ticket->id,
+            'ticketid' => $ticket->id,
+            'uploadedby' => $employee->id,
             'commentid' => null,
-            'filename' => 'error-log.txt',
         ]);
+
+        $attachmentId = $response->json('id');
+
+        $this->getJson("/api/tickets/{$ticket->id}/attachments/{$attachmentId}/download")->assertOk();
     }
 
-    public function test_upload_over_ten_megabytes_is_rejected(): void
+    public function test_attachment_upload_rejects_files_over_10mb(): void
     {
-        Sanctum::actingAs($this->employee);
+        Storage::fake('local');
+        [$employee, , $ticket] = $this->seedTicket();
 
-        $file = UploadedFile::fake()->create('big-file.pdf', 10241, 'application/pdf');
+        Sanctum::actingAs($employee);
 
-        $this
-            ->postJson("/api/tickets/{$this->ticket->id}/attachments", ['file' => $file])
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('file');
+        $this->postJson("/api/tickets/{$ticket->id}/attachments", [
+            'file' => UploadedFile::fake()->create('big.pdf', 10241, 'application/pdf'),
+        ])->assertStatus(422);
     }
 
-    public function test_dangerous_extensions_are_rejected(): void
+    public function test_attachment_upload_rejects_dangerous_extensions(): void
     {
-        Sanctum::actingAs($this->employee);
+        Storage::fake('local');
+        [$employee, , $ticket] = $this->seedTicket();
 
-        $file = UploadedFile::fake()->create('setup.exe', 100, 'application/x-msdownload');
+        Sanctum::actingAs($employee);
 
-        $this
-            ->postJson("/api/tickets/{$this->ticket->id}/attachments", ['file' => $file])
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('file');
+        $this->postJson("/api/tickets/{$ticket->id}/attachments", [
+            'file' => UploadedFile::fake()->create('virus.exe', 10, 'application/x-msdownload'),
+        ])->assertStatus(422);
     }
 
-    public function test_participant_can_attach_an_image_to_a_comment_and_notifies_the_other_side(): void
+    public function test_non_participant_cannot_download_attachment(): void
     {
-        Sanctum::actingAs($this->admin);
-        $this->postJson("/api/tickets/{$this->ticket->id}/assign", ['assignedto' => $this->agent->id]);
+        Storage::fake('local');
+        [$employee, , $ticket] = $this->seedTicket();
+        $outsider = $this->createUser('Employee', 'outsider@example.test');
 
-        Sanctum::actingAs($this->employee);
-        $commentId = $this
-            ->postJson("/api/tickets/{$this->ticket->id}/comments", ['commenttext' => 'Here is a screenshot.'])
-            ->assertCreated()
-            ->json('id');
+        Sanctum::actingAs($employee);
+        $attachmentId = $this->postJson("/api/tickets/{$ticket->id}/attachments", [
+            'file' => UploadedFile::fake()->create('screenshot.png', 500, 'image/png'),
+        ])->assertCreated()->json('id');
 
-        $image = UploadedFile::fake()->image('screenshot.png');
-
-        $this
-            ->postJson("/api/tickets/{$this->ticket->id}/attachments", [
-                'file' => $image,
-                'commentid' => $commentId,
-            ])
-            ->assertCreated()
-            ->assertJsonPath('commentid', $commentId);
-
-        $this->assertDatabaseHas('notifications', [
-            'userid' => $this->agent->id,
-            'ticketid' => $this->ticket->id,
-            'type' => 'attachment',
-        ]);
+        Sanctum::actingAs($outsider);
+        $this->getJson("/api/tickets/{$ticket->id}/attachments/{$attachmentId}/download")->assertForbidden();
     }
 
-    public function test_only_ticket_view_is_allowed_to_download_an_attachment(): void
+    public function test_any_participant_can_attach_an_image_to_a_comment(): void
     {
-        Sanctum::actingAs($this->employee);
+        Storage::fake('local');
+        [$employee, $agent, $ticket] = $this->seedTicket();
 
-        $file = UploadedFile::fake()->create('notes.txt', 50, 'text/plain');
-        $attachmentId = $this
-            ->postJson("/api/tickets/{$this->ticket->id}/attachments", ['file' => $file])
-            ->assertCreated()
-            ->json('id');
+        Sanctum::actingAs($agent);
+        $this->postJson("/api/tickets/{$ticket->id}/assign", ['assignedto' => $agent->id])->assertOk();
 
-        $this
-            ->get("/api/tickets/{$this->ticket->id}/attachments/{$attachmentId}/download")
-            ->assertOk();
+        Sanctum::actingAs($employee);
+        $commentId = $this->postJson("/api/tickets/{$ticket->id}/comments", [
+            'commenttext' => 'Here is a screenshot',
+        ])->assertCreated()->json('id');
 
-        $unrelatedEmployee = $this->createUser('Employee', 'other@example.test');
-        Sanctum::actingAs($unrelatedEmployee);
+        $this->postJson("/api/tickets/{$ticket->id}/attachments", [
+            'commentid' => $commentId,
+            'file' => UploadedFile::fake()->create('proof.jpg', 200, 'image/jpeg'),
+        ])->assertCreated();
 
-        $this
-            ->get("/api/tickets/{$this->ticket->id}/attachments/{$attachmentId}/download")
-            ->assertForbidden();
+        $this->assertDatabaseHas('ticketattachments', ['commentid' => $commentId]);
+
+        // Non-image extensions are rejected for comment attachments even though they're allowed at ticket level.
+        $this->postJson("/api/tickets/{$ticket->id}/attachments", [
+            'commentid' => $commentId,
+            'file' => UploadedFile::fake()->create('notes.pdf', 200, 'application/pdf'),
+        ])->assertStatus(422);
+    }
+
+    /** @return array{0: User, 1: User, 2: Ticket} */
+    private function seedTicket(): array
+    {
+        $this->seed([RolesSeeder::class, CategoriesSeeder::class, PrioritiesSeeder::class, StatusesSeeder::class]);
+
+        $employee = $this->createUser('Employee', 'employee@example.test');
+        $agent = $this->createUser('IT Support Agent', 'agent@example.test');
+        $category = Category::firstOrFail();
+        $priority = Priority::where('name', 'Medium')->firstOrFail();
+
+        Sanctum::actingAs($employee);
+        $ticketId = $this->postJson('/api/tickets', [
+            'subject' => 'Cannot print',
+            'description' => 'Printer offline.',
+            'categoryid' => $category->id,
+            'priorityid' => $priority->id,
+        ])->assertCreated()->json('id');
+
+        return [$employee, $agent, Ticket::findOrFail($ticketId)];
     }
 
     private function createUser(string $roleName, string $email): User

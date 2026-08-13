@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Priority;
+use App\Models\Role;
 use App\Models\Status;
 use App\Models\User;
 
@@ -25,6 +26,11 @@ class LookupController extends Controller
     public function statuses()
     {
         return Status::orderBy('sortorder')->get();
+    }
+
+    public function roles()
+    {
+        return Role::orderBy('rolename')->get();
     }
 
     public function assignableUsers()

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useSearchParams } from 'react-router';
 import { useAuth } from '../context/AuthContext';
 import {
   listAssignableUsers,
@@ -35,6 +35,8 @@ function resolutionText(ticket) {
 export default function TicketList() {
   const { user } = useAuth();
   const isManagingUser = MANAGING_ROLES.includes(user.role?.rolename);
+  const [searchParams] = useSearchParams();
+  const unassignedOnly = searchParams.get('unassigned') === '1';
   const [tickets, setTickets] = useState(null);
   const [categories, setCategories] = useState([]);
   const [priorities, setPriorities] = useState([]);
@@ -74,11 +76,12 @@ export default function TicketList() {
     Object.entries(filters).forEach(([key, value]) => {
       if (value) params[key] = value;
     });
+    if (unassignedOnly) params.unassigned = 1;
 
     listTickets(params)
       .then(setTickets)
       .catch(() => setError('Unable to load tickets.'));
-  }, [filters, page]);
+  }, [filters, page, unassignedOnly]);
 
   function updateFilter(key, value) {
     setPage(1);
@@ -103,7 +106,7 @@ export default function TicketList() {
   return (
     <div>
       <div className="flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold">Tickets</h1>
+        <h1 className="text-2xl font-semibold">{unassignedOnly ? 'Open (Unassigned) Tickets' : 'Tickets'}</h1>
         <Link
           to="/tickets/new"
           className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"

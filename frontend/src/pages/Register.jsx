@@ -8,6 +8,7 @@ export default function Register() {
   const [fullname, setFullname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [phone, setPhone] = useState('');
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
@@ -15,9 +16,15 @@ export default function Register() {
   async function handleSubmit(e) {
     e.preventDefault();
     setErrors({});
+
+    if (password !== passwordConfirmation) {
+      setErrors({ password_confirmation: ['Passwords do not match.'] });
+      return;
+    }
+
     setSubmitting(true);
     try {
-      await register(fullname, email, password, phone);
+      await register(fullname, email, password, passwordConfirmation, phone);
       navigate('/');
     } catch (err) {
       if (err.response?.status === 422) {
@@ -93,6 +100,21 @@ export default function Register() {
             className="mt-1 w-full rounded border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-900"
           />
           {fieldError('password') && <p className="mt-1 text-sm text-red-600">{fieldError('password')}</p>}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium">Confirm Password</label>
+          <input
+            type="password"
+            required
+            minLength={8}
+            value={passwordConfirmation}
+            onChange={(e) => setPasswordConfirmation(e.target.value)}
+            className="mt-1 w-full rounded border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-900"
+          />
+          {fieldError('password_confirmation') && (
+            <p className="mt-1 text-sm text-red-600">{fieldError('password_confirmation')}</p>
+          )}
         </div>
 
         <button

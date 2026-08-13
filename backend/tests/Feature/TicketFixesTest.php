@@ -134,6 +134,7 @@ class TicketFixesTest extends TestCase
                 'fullname' => 'New Person',
                 'email' => 'new.person@example.test',
                 'password' => 'Password123!',
+                'password_confirmation' => 'Password123!',
             ])
             ->assertCreated();
 

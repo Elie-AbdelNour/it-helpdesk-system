@@ -272,6 +272,31 @@ export default function TicketDetail() {
   const canDelete = user.role?.rolename === 'Admin' || (isOwner && isUntouched);
   const resolutionIsLate = ticket.resolutionstate === 'overdue' || ticket.resolutionstate === 'resolved_late';
 
+  // Eloquent snake_cases multi-word relation names in JSON, so the eager-loaded
+  // `statusHistories` relation (with its `fromStatus`/`toStatus`/`changedBy` sub-relations)
+  // arrives here as `status_histories[].to_status` / `.from_status` / `.changed_by`.
+  const isPending = ticket.status?.name === 'Pending';
+  const pendingEntry = isPending
+    ? ticket.status_histories?.find((h) => h.to_status?.name === 'Pending')
+    : null;
+  const inProgressStatus = statuses.find((s) => s.name === 'In Progress');
+  const selectedStatusName = statuses.find((s) => String(s.id) === statusForm.statusid)?.name;
+  const isPausingWork = selectedStatusName === 'Pending';
+
+  async function handleResumeWork() {
+    if (!inProgressStatus) return;
+    setWorkflowError(null);
+    setSubmitting('status');
+    try {
+      const updated = await updateTicketStatus(id, { statusid: inProgressStatus.id, notes: 'Work resumed' });
+      await refreshWorkflow(updated);
+    } catch (err) {
+      setWorkflowError(err.response?.data?.message ?? 'Unable to resume work.');
+    } finally {
+      setSubmitting(null);
+    }
+  }
+
   return (
     <div className="space-y-6">
       <section className="rounded-lg bg-white p-6 shadow dark:bg-slate-800">
@@ -349,6 +374,32 @@ export default function TicketDetail() {
           </div>
         </dl>
       </section>
+
+      {isPending && (
+        <section className="rounded-lg border border-amber-300 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-900/30">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="font-semibold text-amber-800 dark:text-amber-200">Work Paused</p>
+              {pendingEntry?.notes && (
+                <p className="mt-1 text-sm text-amber-700 dark:text-amber-300">{pendingEntry.notes}</p>
+              )}
+              <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">
+                Pending since {formatDateTime(pendingEntry?.changedat)}
+                {pendingEntry?.changed_by?.fullname ? ` · set by ${pendingEntry.changed_by.fullname}` : ''}
+              </p>
+            </div>
+            {isManagingUser && inProgressStatus && (
+              <button
+                onClick={handleResumeWork}
+                disabled={submitting === 'status'}
+                className="rounded bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700 disabled:opacity-50"
+              >
+                {submitting === 'status' ? 'Resuming...' : 'Resume Work'}
+              </button>
+            )}
+          </div>
+        </section>
+      )}
 
       {editing && (
         <section className="rounded-lg bg-white p-6 shadow dark:bg-slate-800">
@@ -499,7 +550,8 @@ export default function TicketDetail() {
               </select>
               <textarea
                 rows={3}
-                placeholder="Status notes"
+                required={isPausingWork}
+                placeholder={isPausingWork ? 'Reason for pausing work' : 'Status notes'}
                 value={statusForm.notes}
                 onChange={(e) => setStatusForm((f) => ({ ...f, notes: e.target.value }))}
                 className="w-full rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
