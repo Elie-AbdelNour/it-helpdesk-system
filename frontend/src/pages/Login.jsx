@@ -78,7 +78,7 @@ export default function Login() {
             <button
               type="button"
               onClick={() => setShowPassword((visible) => !visible)}
-              className="absolute right-2.5 top-1/2 mt-1 -translate-y-1/2 rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+              className="absolute right-2.5 top-1/2 mt-1 -translate-y-1/2 rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700 dark:text-slate-500 dark:hover:bg-slate-800 dark:hover:text-slate-200"
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
               <Icon name={showPassword ? 'eyeOff' : 'eye'} className="h-4 w-4" />
@@ -93,9 +93,9 @@ export default function Login() {
         </button>
 
         <div className="flex items-center gap-3 py-1">
-          <span className="h-px flex-1 bg-slate-100" />
+          <span className="h-px flex-1 bg-slate-100 dark:bg-slate-800" />
           <span className="text-[11px] font-medium uppercase tracking-wider text-slate-400">Alternative access</span>
-          <span className="h-px flex-1 bg-slate-100" />
+          <span className="h-px flex-1 bg-slate-100 dark:bg-slate-800" />
         </div>
 
         <Link to="/forgot-password" className="btn-secondary w-full">

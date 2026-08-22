@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { listNotifications, markAllNotificationsRead, markNotificationRead } from '../api/notifications';
 
@@ -53,7 +53,7 @@ export default function NotificationBell() {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="relative rounded-xl border border-transparent p-2.5 text-slate-500 hover:border-slate-200 hover:bg-slate-50 hover:text-blue-600"
+        className="relative rounded-xl border border-transparent p-2.5 text-slate-500 hover:border-slate-200 hover:bg-slate-50 hover:text-blue-600 dark:text-slate-400 dark:hover:border-slate-700 dark:hover:bg-slate-800"
         aria-label="Notifications"
       >
         <BellIcon />
@@ -67,14 +67,14 @@ export default function NotificationBell() {
       {open && (
         <>
           <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 z-50 mt-2 w-[min(22rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-900/10">
-            <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/70 px-4 py-3.5">
+          <div className="absolute right-0 z-50 mt-2 w-[min(22rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-900/10 dark:border-slate-700 dark:bg-slate-800">
+            <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/70 px-4 py-3.5 dark:border-slate-700 dark:bg-slate-800/70">
               <div>
-                <span className="block text-sm font-semibold text-slate-900">Notifications</span>
+                <span className="block text-sm font-semibold text-slate-900 dark:text-slate-100">Notifications</span>
                 <span className="mt-0.5 block text-[11px] text-slate-400">Recent help desk activity</span>
               </div>
               {unreadCount > 0 && (
-                <button onClick={handleMarkAllRead} className="text-xs font-semibold text-blue-600 hover:text-blue-700">
+                <button onClick={handleMarkAllRead} className="text-xs font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
                   Mark all read
                 </button>
               )}
@@ -89,10 +89,10 @@ export default function NotificationBell() {
                 <button
                   key={notification.id}
                   onClick={() => handleOpenNotification(notification)}
-                  className={`block w-full border-b border-slate-100 px-4 py-3.5 text-left text-sm last:border-0 hover:bg-blue-50/50 ${
+                  className={`block w-full border-b border-slate-100 px-4 py-3.5 text-left text-sm last:border-0 hover:bg-blue-50/50 dark:border-slate-700 dark:hover:bg-blue-500/10 ${
                     notification.isread
-                      ? 'text-slate-500'
-                      : 'bg-blue-50/30 font-medium text-slate-900'
+                      ? 'text-slate-500 dark:text-slate-400'
+                      : 'bg-blue-50/30 font-medium text-slate-900 dark:bg-blue-500/10 dark:text-slate-100'
                   }`}
                 >
                   <p>{notification.message}</p>
@@ -100,6 +100,13 @@ export default function NotificationBell() {
                 </button>
               ))}
             </div>
+            <Link
+              to="/notifications"
+              onClick={() => setOpen(false)}
+              className="block border-t border-slate-100 px-4 py-3 text-center text-xs font-semibold text-blue-600 hover:bg-blue-50/50 hover:text-blue-700 dark:border-slate-700 dark:text-blue-400 dark:hover:bg-blue-500/10 dark:hover:text-blue-300"
+            >
+              View all notifications
+            </Link>
           </div>
         </>
       )}

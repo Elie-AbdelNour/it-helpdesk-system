@@ -33,6 +33,7 @@ class DashboardController extends Controller
         $payload = [
             'totals' => [
                 'open' => $tickets->where('resolutionstate', 'open')->count(),
+                'pending' => $tickets->filter(fn (Ticket $t) => $t->status?->name === 'Pending')->count(),
                 'overdue' => $tickets->where('resolutionstate', 'overdue')->count(),
                 'resolved' => $resolved->count(),
                 'closed' => $tickets->filter(fn (Ticket $t) => $t->status?->name === 'Closed')->count(),

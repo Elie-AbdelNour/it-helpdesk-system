@@ -85,7 +85,7 @@ export default function TicketCreate() {
             </div>
           </div>
 
-          <div className="flex flex-col-reverse gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:justify-end">
+          <div className="flex flex-col-reverse gap-3 border-t border-slate-100 pt-6 dark:border-slate-800 sm:flex-row sm:justify-end">
             <button type="button" onClick={() => navigate(-1)} className="btn-secondary">Cancel</button>
             <button type="submit" disabled={submitting} className="btn-primary sm:min-w-40">
               {submitting ? 'Creating...' : 'Create ticket'}
@@ -95,9 +95,9 @@ export default function TicketCreate() {
         </form>
 
         <aside className="app-card p-5">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600"><Icon name="sparkles" className="h-5 w-5" /></span>
-          <h2 className="mt-4 text-sm font-semibold text-slate-900">Get a faster response</h2>
-          <ul className="mt-4 space-y-3 text-xs leading-5 text-slate-500">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400"><Icon name="sparkles" className="h-5 w-5" /></span>
+          <h2 className="mt-4 text-sm font-semibold text-slate-900 dark:text-slate-100">Get a faster response</h2>
+          <ul className="mt-4 space-y-3 text-xs leading-5 text-slate-500 dark:text-slate-400">
             {['Describe the business impact.', 'Include the exact error message.', 'List the steps that reproduce it.', 'Choose the closest category and priority.'].map((tip) => (
               <li key={tip} className="flex gap-2.5"><Icon name="check" className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />{tip}</li>
             ))}

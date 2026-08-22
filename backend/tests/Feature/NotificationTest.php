@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Mail\TicketNotificationMail;
 use App\Models\Category;
 use App\Models\Priority;
 use App\Models\Role;
@@ -12,6 +13,7 @@ use Database\Seeders\PrioritiesSeeder;
 use Database\Seeders\RolesSeeder;
 use Database\Seeders\StatusesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -21,6 +23,7 @@ class NotificationTest extends TestCase
 
     public function test_assignment_comment_and_status_change_create_notifications(): void
     {
+        Mail::fake();
         $this->seed([RolesSeeder::class, CategoriesSeeder::class, PrioritiesSeeder::class, StatusesSeeder::class]);
 
         $employee = $this->createUser('Employee', 'employee@example.test');
@@ -45,6 +48,7 @@ class NotificationTest extends TestCase
             'ticketid' => $ticketId,
             'type' => 'assignment',
         ]);
+        Mail::assertSent(TicketNotificationMail::class, fn (TicketNotificationMail $mail) => $mail->hasTo($agent->email));
 
         $this->postJson("/api/tickets/{$ticketId}/status", ['statusid' => $inProgress->id])->assertOk();
 
@@ -63,6 +67,7 @@ class NotificationTest extends TestCase
             'ticketid' => $ticketId,
             'type' => 'comment',
         ]);
+        Mail::assertSent(TicketNotificationMail::class, fn (TicketNotificationMail $mail) => $mail->hasTo($employee->email));
 
         Sanctum::actingAs($employee);
         $response = $this->getJson('/api/notifications')->assertOk();

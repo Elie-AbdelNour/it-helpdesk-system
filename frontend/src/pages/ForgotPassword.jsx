@@ -64,7 +64,7 @@ export default function ForgotPassword() {
           </button>
         </div>
 
-        <p className="rounded-xl bg-slate-50 px-4 py-3 text-xs leading-5 text-slate-500">
+        <p className="rounded-xl bg-slate-50 px-4 py-3 text-xs leading-5 text-slate-500 dark:bg-slate-800/60 dark:text-slate-400">
           For security, we show the same response whether or not an email exists in the system.
         </p>
       </div>

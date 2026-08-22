@@ -48,6 +48,10 @@ export function listPriorities() {
   return client.get('/api/priorities').then((res) => res.data);
 }
 
+export function updatePriority(id, payload) {
+  return client.patch(`/api/admin/priorities/${id}`, payload).then((res) => res.data);
+}
+
 export function listStatuses() {
   return client.get('/api/statuses').then((res) => res.data);
 }

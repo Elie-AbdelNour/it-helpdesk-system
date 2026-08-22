@@ -56,14 +56,14 @@ export default function Register() {
         <div>
           <label htmlFor="fullname" className="field-label">Full name</label>
           <input id="fullname" type="text" required autoComplete="name" value={fullname} onChange={(event) => setFullname(event.target.value)} className="form-control" placeholder="Your full name" />
-          {fieldError('fullname') && <p className="mt-1.5 text-xs text-red-600">{fieldError('fullname')}</p>}
+          {fieldError('fullname') && <p className="mt-1.5 text-xs text-red-600 dark:text-red-400">{fieldError('fullname')}</p>}
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="register-email" className="field-label">Email address</label>
             <input id="register-email" type="email" required autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} className="form-control" placeholder="name@company.com" />
-            {fieldError('email') && <p className="mt-1.5 text-xs text-red-600">{fieldError('email')}</p>}
+            {fieldError('email') && <p className="mt-1.5 text-xs text-red-600 dark:text-red-400">{fieldError('email')}</p>}
           </div>
           <div>
             <label htmlFor="phone" className="field-label">Phone <span className="font-normal text-slate-400">(optional)</span></label>
@@ -75,12 +75,12 @@ export default function Register() {
           <div>
             <label htmlFor="register-password" className="field-label">Password</label>
             <input id="register-password" type="password" required minLength={8} autoComplete="new-password" value={password} onChange={(event) => setPassword(event.target.value)} className="form-control" placeholder="8+ characters" />
-            {fieldError('password') && <p className="mt-1.5 text-xs text-red-600">{fieldError('password')}</p>}
+            {fieldError('password') && <p className="mt-1.5 text-xs text-red-600 dark:text-red-400">{fieldError('password')}</p>}
           </div>
           <div>
             <label htmlFor="confirm-password" className="field-label">Confirm password</label>
             <input id="confirm-password" type="password" required minLength={8} autoComplete="new-password" value={passwordConfirmation} onChange={(event) => setPasswordConfirmation(event.target.value)} className="form-control" placeholder="Repeat password" />
-            {fieldError('password_confirmation') && <p className="mt-1.5 text-xs text-red-600">{fieldError('password_confirmation')}</p>}
+            {fieldError('password_confirmation') && <p className="mt-1.5 text-xs text-red-600 dark:text-red-400">{fieldError('password_confirmation')}</p>}
           </div>
         </div>
 

@@ -5,18 +5,20 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
 use App\Models\AssignmentHistory;
-use App\Models\Notification;
 use App\Models\Priority;
 use App\Models\Status;
 use App\Models\Ticket;
 use App\Models\TicketComment;
 use App\Models\TicketStatusHistory;
 use App\Models\User;
+use App\Support\Concerns\NotifiesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class TicketController extends Controller
 {
+    use NotifiesUsers;
+
     private const MANAGING_ROLES = ['Admin', 'Manager', 'IT Support Agent'];
     private const FINAL_STATUSES = ['Resolved', 'Closed'];
 
@@ -382,9 +384,45 @@ class TicketController extends Controller
 
         if (! $isInternal) {
             $this->notifyOtherSide($request->user(), $ticket, "New comment on ticket {$ticket->ticketrefno}", 'comment');
+
+            $otherSideId = (int) $request->user()->id === (int) $ticket->createdby
+                ? $ticket->assignedto
+                : $ticket->createdby;
+
+            foreach ($this->parseMentions($ticket, $validated['commenttext'], $request->user(), (int) $otherSideId) as $mentioned) {
+                $this->notifyUser(
+                    $mentioned->id,
+                    $ticket,
+                    "{$request->user()->fullname} mentioned you in a comment on {$ticket->ticketrefno}",
+                    'mention',
+                );
+            }
         }
 
         return response()->json($comment->load('user'), 201);
+    }
+
+    /** @return array<User> */
+    private function parseMentions(Ticket $ticket, string $commentText, User $actor, int $skipUserId): array
+    {
+        $candidates = collect([$ticket->creator, $ticket->agent])
+            ->filter()
+            ->merge(User::whereHas('role', fn ($query) => $query->whereIn('rolename', ['Manager', 'Admin']))->get())
+            ->unique('id');
+
+        $mentioned = [];
+
+        foreach ($candidates as $candidate) {
+            if ((int) $candidate->id === (int) $actor->id || (int) $candidate->id === $skipUserId) {
+                continue;
+            }
+
+            if (stripos($commentText, '@'.$candidate->fullname) !== false) {
+                $mentioned[$candidate->id] = $candidate;
+            }
+        }
+
+        return array_values($mentioned);
     }
 
     public function history(Request $request, Ticket $ticket)
@@ -555,30 +593,5 @@ class TicketController extends Controller
     private function isManagingUser(User $user): bool
     {
         return in_array($user->role?->rolename, self::MANAGING_ROLES, true);
-    }
-
-    private function notifyOtherSide(User $actor, Ticket $ticket, string $message, string $type): void
-    {
-        $isActorCreator = (int) $actor->id === (int) $ticket->createdby;
-
-        if ($isActorCreator) {
-            if ($ticket->assignedto) {
-                $this->notifyUser((int) $ticket->assignedto, $ticket, $message, $type);
-            }
-
-            return;
-        }
-
-        $this->notifyUser((int) $ticket->createdby, $ticket, $message, $type);
-    }
-
-    private function notifyUser(int $userId, ?Ticket $ticket, string $message, string $type): void
-    {
-        Notification::create([
-            'userid' => $userId,
-            'ticketid' => $ticket?->id,
-            'message' => $message,
-            'type' => $type,
-        ]);
     }
 }

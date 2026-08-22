@@ -6,6 +6,10 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\LookupController;
 use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\PriorityController;
+use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\ReportController;
+use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\TicketAttachmentController;
 use App\Http\Controllers\Api\TicketController;
 use App\Http\Controllers\Api\UserController;
@@ -43,6 +47,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/dashboard/stats', [DashboardController::class, 'stats']);
 
+    Route::patch('/profile', [ProfileController::class, 'update']);
+    Route::post('/profile/password', [ProfileController::class, 'updatePassword']);
+
+    Route::get('/reports/summary', [ReportController::class, 'summary']);
+    Route::get('/reports/export', [ReportController::class, 'export']);
+
     Route::get('/roles', [LookupController::class, 'roles'])->middleware('role:Admin');
     Route::get('/admin/users', [UserController::class, 'index'])->middleware('role:Admin');
     Route::post('/admin/users', [UserController::class, 'store'])->middleware('role:Admin');
@@ -51,6 +61,9 @@ Route::middleware('auth:sanctum')->group(function () {
         ->middleware('role:Admin,Manager');
     Route::post('/admin/categories', [CategoryController::class, 'store'])->middleware('role:Admin');
     Route::patch('/admin/categories/{category}', [CategoryController::class, 'update'])->middleware('role:Admin');
+    Route::get('/admin/settings', [SettingController::class, 'index'])->middleware('role:Admin');
+    Route::patch('/admin/settings', [SettingController::class, 'update'])->middleware('role:Admin');
+    Route::patch('/admin/priorities/{priority}', [PriorityController::class, 'update'])->middleware('role:Admin');
 
     Route::get('/categories', [LookupController::class, 'categories']);
     Route::get('/priorities', [LookupController::class, 'priorities']);

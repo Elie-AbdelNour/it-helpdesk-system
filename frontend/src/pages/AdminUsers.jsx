@@ -6,21 +6,22 @@ import PageHeader from '../components/PageHeader';
 const emptyForm = { fullname: '', email: '', password: '', password_confirmation: '', roleid: '' };
 
 export default function AdminUsers() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(null);
   const [roles, setRoles] = useState([]);
   const [filters, setFilters] = useState({ search: '', roleid: '', isactive: '' });
+  const [page, setPage] = useState(1);
   const [form, setForm] = useState(emptyForm);
   const [showForm, setShowForm] = useState(false);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
   function load() {
-    const params = {};
+    const params = { page };
     if (filters.search) params.search = filters.search;
     if (filters.roleid) params.roleid = filters.roleid;
     if (filters.isactive !== '') params.isactive = filters.isactive;
 
-    listUsers(params).then((res) => setUsers(res.data));
+    listUsers(params).then(setUsers);
   }
 
   useEffect(() => {
@@ -30,7 +31,12 @@ export default function AdminUsers() {
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters]);
+  }, [filters, page]);
+
+  function updateFilter(key, value) {
+    setPage(1);
+    setFilters((f) => ({ ...f, [key]: value }));
+  }
 
   async function handleCreate(e) {
     e.preventDefault();
@@ -156,12 +162,12 @@ export default function AdminUsers() {
             type="text"
             placeholder="Name or email"
             value={filters.search}
-            onChange={(e) => setFilters((f) => ({ ...f, search: e.target.value }))}
+            onChange={(e) => updateFilter('search', e.target.value)}
             className="rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
           />
           <select
             value={filters.roleid}
-            onChange={(e) => setFilters((f) => ({ ...f, roleid: e.target.value }))}
+            onChange={(e) => updateFilter('roleid', e.target.value)}
             className="rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
           >
             <option value="">All roles</option>
@@ -173,7 +179,7 @@ export default function AdminUsers() {
           </select>
           <select
             value={filters.isactive}
-            onChange={(e) => setFilters((f) => ({ ...f, isactive: e.target.value }))}
+            onChange={(e) => updateFilter('isactive', e.target.value)}
             className="rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
           >
             <option value="">All statuses</option>
@@ -194,7 +200,7 @@ export default function AdminUsers() {
               </tr>
             </thead>
             <tbody>
-              {users.map((u) => (
+              {users?.data.map((u) => (
                 <tr key={u.id} className="border-b border-slate-100 last:border-0 dark:border-slate-700">
                   <td className="px-3 py-2 font-medium">{u.fullname}</td>
                   <td className="px-3 py-2 text-slate-500 dark:text-slate-400">{u.email}</td>
@@ -229,7 +235,7 @@ export default function AdminUsers() {
                   </td>
                 </tr>
               ))}
-              {users.length === 0 && (
+              {users && users.data.length === 0 && (
                 <tr>
                   <td colSpan={5} className="px-3 py-5 text-center text-slate-500">
                     No users found.
@@ -239,6 +245,28 @@ export default function AdminUsers() {
             </tbody>
           </table>
         </div>
+
+        {users && users.last_page > 1 && (
+          <div className="mt-4 flex items-center justify-center gap-3 text-sm">
+            <button
+              disabled={page <= 1}
+              onClick={() => setPage((p) => p - 1)}
+              className="btn-secondary min-h-0 px-3 py-1.5"
+            >
+              Previous
+            </button>
+            <span>
+              Page {users.current_page} of {users.last_page}
+            </span>
+            <button
+              disabled={page >= users.last_page}
+              onClick={() => setPage((p) => p + 1)}
+              className="btn-secondary min-h-0 px-3 py-1.5"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </section>
     </div>
   );

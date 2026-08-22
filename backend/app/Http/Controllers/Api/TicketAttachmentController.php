@@ -4,17 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
-use App\Models\Notification;
 use App\Models\Ticket;
 use App\Models\TicketAttachment;
 use App\Models\TicketComment;
 use App\Models\User;
+use App\Support\Concerns\NotifiesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class TicketAttachmentController extends Controller
 {
+    use NotifiesUsers;
+
     private const MANAGING_ROLES = ['Admin', 'Manager', 'IT Support Agent'];
 
     private const MAX_FILE_KB = 10240;
@@ -98,31 +100,6 @@ class TicketAttachmentController extends Controller
         $this->recordActivity($request, $ticket, 'attachment_deleted', 'Attachment deleted: '.$attachment->filename);
 
         return response()->noContent();
-    }
-
-    private function notifyOtherSide(User $actor, Ticket $ticket, string $message, string $type): void
-    {
-        $isActorCreator = (int) $actor->id === (int) $ticket->createdby;
-
-        if ($isActorCreator) {
-            if ($ticket->assignedto) {
-                $this->notifyUser((int) $ticket->assignedto, $ticket, $message, $type);
-            }
-
-            return;
-        }
-
-        $this->notifyUser((int) $ticket->createdby, $ticket, $message, $type);
-    }
-
-    private function notifyUser(int $userId, ?Ticket $ticket, string $message, string $type): void
-    {
-        Notification::create([
-            'userid' => $userId,
-            'ticketid' => $ticket?->id,
-            'message' => $message,
-            'type' => $type,
-        ]);
     }
 
     private function recordActivity(Request $request, Ticket $ticket, string $action, string $details): void

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import Avatar from './Avatar';
 import Brand from './Brand';
 import Icon from './Icon';
@@ -11,17 +12,20 @@ const NAV_BY_ROLE = {
     { to: '/', label: 'Dashboard', icon: 'dashboard' },
     { to: '/tickets', label: 'My Tickets', icon: 'tickets' },
     { to: '/tickets/new', label: 'Create Ticket', icon: 'plus' },
+    { to: '/reports', label: 'Reports', icon: 'reports' },
   ],
   'IT Support Agent': [
     { to: '/', label: 'Dashboard', icon: 'dashboard' },
     { to: '/tickets', label: 'Assigned Tickets', icon: 'tickets' },
     { to: '/tickets?unassigned=1', label: 'Open Tickets', icon: 'inbox' },
+    { to: '/reports', label: 'Reports', icon: 'reports' },
   ],
   Manager: [
     { to: '/', label: 'Dashboard', icon: 'dashboard' },
     { to: '/tickets', label: 'All Tickets', icon: 'tickets' },
     { to: '/ticket-assignments', label: 'Ticket Assignments', icon: 'assignment' },
     { to: '/team-workload', label: 'Team Workload', icon: 'workload' },
+    { to: '/reports', label: 'Reports', icon: 'reports' },
     { to: '/audit-log', label: 'System Audit Log', icon: 'audit' },
   ],
   Admin: [
@@ -30,9 +34,11 @@ const NAV_BY_ROLE = {
     { to: '/tickets/new', label: 'Create Ticket', icon: 'plus' },
     { to: '/ticket-assignments', label: 'Ticket Assignments', icon: 'assignment' },
     { to: '/team-workload', label: 'Team Workload', icon: 'workload' },
+    { to: '/reports', label: 'Reports', icon: 'reports' },
     { to: '/admin/users', label: 'Users', icon: 'users' },
     { to: '/admin/categories', label: 'Categories', icon: 'categories' },
     { to: '/audit-log', label: 'System Audit Log', icon: 'audit' },
+    { to: '/admin/settings', label: 'Settings', icon: 'settings' },
   ],
 };
 
@@ -42,9 +48,13 @@ const PAGE_TITLES = {
   '/tickets/new': 'Create ticket',
   '/ticket-assignments': 'Ticket assignments',
   '/team-workload': 'Team workload',
+  '/reports': 'Reports',
   '/admin/users': 'User management',
   '/admin/categories': 'Ticket categories',
   '/audit-log': 'System audit log',
+  '/admin/settings': 'System settings',
+  '/profile': 'My profile',
+  '/notifications': 'Notifications',
 };
 
 function isItemActive(item, location) {
@@ -62,6 +72,7 @@ function currentPageTitle(pathname) {
 
 export default function Layout() {
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(() => localStorage.getItem('helpdesk-sidebar') === 'collapsed');
@@ -89,7 +100,7 @@ export default function Layout() {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
+    <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950">
       {mobileOpen && (
         <button
           type="button"
@@ -174,7 +185,7 @@ export default function Layout() {
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
-              className="rounded-xl border border-slate-200 bg-white p-2 text-slate-600 shadow-sm hover:bg-slate-50 lg:hidden"
+              className="rounded-xl border border-slate-200 bg-white p-2 text-slate-600 shadow-sm hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 lg:hidden"
               aria-label="Open navigation"
             >
               <Icon name="menu" />
@@ -184,25 +195,33 @@ export default function Layout() {
             </span>
             <div className="min-w-0">
               <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">Workspace</p>
-              <p className="truncate text-sm font-semibold text-slate-800">{currentPageTitle(location.pathname)}</p>
+              <p className="truncate text-sm font-semibold text-slate-800 dark:text-slate-100">{currentPageTitle(location.pathname)}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="rounded-xl border border-transparent p-2.5 text-slate-500 hover:border-slate-200 hover:bg-slate-50 hover:text-blue-600 dark:text-slate-400 dark:hover:border-slate-700 dark:hover:bg-slate-800"
+              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              <Icon name={theme === 'dark' ? 'sun' : 'moon'} className="h-5 w-5" />
+            </button>
             <NotificationBell />
-            <div className="h-7 w-px bg-slate-200" />
+            <div className="h-7 w-px bg-slate-200 dark:bg-slate-700" />
 
             <div className="relative">
               <button
                 type="button"
                 onClick={() => setMenuOpen((open) => !open)}
-                className="flex items-center gap-2 rounded-xl p-1.5 pr-2 hover:bg-slate-100"
+                className="flex items-center gap-2 rounded-xl p-1.5 pr-2 hover:bg-slate-100 dark:hover:bg-slate-800"
                 aria-expanded={menuOpen}
               >
                 <Avatar fullname={user?.fullname} />
                 <span className="hidden max-w-48 text-left sm:block">
-                  <span className="block truncate text-sm font-semibold text-slate-800">{user?.fullname}</span>
-                  <span className="block truncate text-[11px] text-slate-500">{user?.role?.rolename}</span>
+                  <span className="block truncate text-sm font-semibold text-slate-800 dark:text-slate-100">{user?.fullname}</span>
+                  <span className="block truncate text-[11px] text-slate-500 dark:text-slate-400">{user?.role?.rolename}</span>
                 </span>
                 <Icon name="chevronDown" className="hidden h-4 w-4 text-slate-400 sm:block" />
               </button>
@@ -210,18 +229,25 @@ export default function Layout() {
               {menuOpen && (
                 <>
                   <button className="fixed inset-0 z-40 cursor-default" onClick={() => setMenuOpen(false)} aria-label="Close profile menu" />
-                  <div className="absolute right-0 z-50 mt-2 w-64 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-900/10">
-                    <div className="border-b border-slate-100 bg-slate-50/70 px-4 py-4">
-                      <p className="truncate text-sm font-semibold text-slate-900">{user?.fullname}</p>
-                      <p className="mt-0.5 truncate text-xs text-slate-500">{user?.email}</p>
-                      <span className="mt-2 inline-flex rounded-full bg-blue-50 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-blue-700">
+                  <div className="absolute right-0 z-50 mt-2 w-64 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-900/10 dark:border-slate-700 dark:bg-slate-800">
+                    <div className="border-b border-slate-100 bg-slate-50/70 px-4 py-4 dark:border-slate-700 dark:bg-slate-800/70">
+                      <p className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">{user?.fullname}</p>
+                      <p className="mt-0.5 truncate text-xs text-slate-500 dark:text-slate-400">{user?.email}</p>
+                      <span className="mt-2 inline-flex rounded-full bg-blue-50 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-blue-700 dark:bg-blue-500/10 dark:text-blue-400">
                         {user?.role?.rolename}
                       </span>
                     </div>
+                    <Link
+                      to="/profile"
+                      className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-700"
+                    >
+                      <Icon name="profile" className="h-4 w-4" />
+                      My profile
+                    </Link>
                     <button
                       type="button"
                       onClick={handleLogout}
-                      className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-red-50 hover:text-red-700"
+                      className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-red-50 hover:text-red-700 dark:text-slate-200 dark:hover:bg-red-500/10 dark:hover:text-red-400"
                     >
                       <Icon name="logout" className="h-4 w-4" />
                       Log out

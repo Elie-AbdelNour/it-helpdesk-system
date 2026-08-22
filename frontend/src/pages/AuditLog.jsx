@@ -7,17 +7,23 @@ function formatDateTime(value) {
 }
 
 export default function AuditLog() {
-  const [logs, setLogs] = useState([]);
+  const [logs, setLogs] = useState(null);
   const [filters, setFilters] = useState({ action: '', datefrom: '', dateto: '' });
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
-    const params = {};
+    const params = { page };
     if (filters.action) params.action = filters.action;
     if (filters.datefrom) params.datefrom = filters.datefrom;
     if (filters.dateto) params.dateto = filters.dateto;
 
-    listActivityLog(params).then((res) => setLogs(res.data));
-  }, [filters]);
+    listActivityLog(params).then(setLogs);
+  }, [filters, page]);
+
+  function updateFilter(key, value) {
+    setPage(1);
+    setFilters((f) => ({ ...f, [key]: value }));
+  }
 
   return (
     <div className="space-y-6">
@@ -29,7 +35,7 @@ export default function AuditLog() {
             type="text"
             placeholder="Action (e.g. ticket_assigned)"
             value={filters.action}
-            onChange={(e) => setFilters((f) => ({ ...f, action: e.target.value }))}
+            onChange={(e) => updateFilter('action', e.target.value)}
             className="rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
           />
           <label className="text-xs font-medium text-slate-500 dark:text-slate-400">
@@ -37,7 +43,7 @@ export default function AuditLog() {
             <input
               type="date"
               value={filters.datefrom}
-              onChange={(e) => setFilters((f) => ({ ...f, datefrom: e.target.value }))}
+              onChange={(e) => updateFilter('datefrom', e.target.value)}
               className="mt-1 block rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
             />
           </label>
@@ -46,7 +52,7 @@ export default function AuditLog() {
             <input
               type="date"
               value={filters.dateto}
-              onChange={(e) => setFilters((f) => ({ ...f, dateto: e.target.value }))}
+              onChange={(e) => updateFilter('dateto', e.target.value)}
               className="mt-1 block rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
             />
           </label>
@@ -63,7 +69,7 @@ export default function AuditLog() {
               </tr>
             </thead>
             <tbody>
-              {logs.map((log) => (
+              {logs?.data.map((log) => (
                 <tr key={log.id} className="border-b border-slate-100 last:border-0 dark:border-slate-700">
                   <td className="px-3 py-2">{formatDateTime(log.createdat)}</td>
                   <td className="px-3 py-2">{log.user?.fullname ?? '-'}</td>
@@ -71,7 +77,7 @@ export default function AuditLog() {
                   <td className="px-3 py-2">{log.details}</td>
                 </tr>
               ))}
-              {logs.length === 0 && (
+              {logs && logs.data.length === 0 && (
                 <tr>
                   <td colSpan={4} className="px-3 py-5 text-center text-slate-500">
                     No audit entries found.
@@ -81,6 +87,28 @@ export default function AuditLog() {
             </tbody>
           </table>
         </div>
+
+        {logs && logs.last_page > 1 && (
+          <div className="mt-4 flex items-center justify-center gap-3 text-sm">
+            <button
+              disabled={page <= 1}
+              onClick={() => setPage((p) => p - 1)}
+              className="btn-secondary min-h-0 px-3 py-1.5"
+            >
+              Previous
+            </button>
+            <span>
+              Page {logs.current_page} of {logs.last_page}
+            </span>
+            <button
+              disabled={page >= logs.last_page}
+              onClick={() => setPage((p) => p + 1)}
+              className="btn-secondary min-h-0 px-3 py-1.5"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </section>
     </div>
   );

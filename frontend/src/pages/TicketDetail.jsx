@@ -671,6 +671,7 @@ export default function TicketDetail() {
             onChange={(e) => setCommentForm((f) => ({ ...f, commenttext: e.target.value }))}
             className="w-full rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
           />
+          <p className="text-xs text-slate-400">Type @Full Name to notify someone directly (e.g. @Morgan Manager).</p>
           <div>
             <input
               type="file"

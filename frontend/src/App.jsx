@@ -16,6 +16,10 @@ import TeamWorkload from './pages/TeamWorkload';
 import AuditLog from './pages/AuditLog';
 import AdminUsers from './pages/AdminUsers';
 import AdminCategories from './pages/AdminCategories';
+import Profile from './pages/Profile';
+import Reports from './pages/Reports';
+import Notifications from './pages/Notifications';
+import Settings from './pages/Settings';
 
 export default function App() {
   return (
@@ -39,6 +43,10 @@ export default function App() {
               <Route path="/audit-log" element={<AuditLog />} />
               <Route path="/admin/users" element={<AdminUsers />} />
               <Route path="/admin/categories" element={<AdminCategories />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/reports" element={<Reports />} />
+              <Route path="/notifications" element={<Notifications />} />
+              <Route path="/admin/settings" element={<Settings />} />
             </Route>
           </Route>
 
