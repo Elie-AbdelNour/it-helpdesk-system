@@ -1,22 +1,22 @@
 import { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router';
 import { resetPassword } from '../api/auth';
+import AuthShell from '../components/AuthShell';
+import Icon from '../components/Icon';
 
 export default function ResetPassword() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token') ?? '';
   const email = searchParams.get('email') ?? '';
-
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  async function handleSubmit(event) {
+    event.preventDefault();
     setError(null);
-
     if (password !== passwordConfirmation) {
       setError('Passwords do not match.');
       return;
@@ -24,15 +24,10 @@ export default function ResetPassword() {
 
     setSubmitting(true);
     try {
-      await resetPassword({
-        email,
-        token,
-        password,
-        password_confirmation: passwordConfirmation,
-      });
+      await resetPassword({ email, token, password, password_confirmation: passwordConfirmation });
       navigate('/login');
     } catch (err) {
-      setError(err.response?.data?.message ?? 'Unable to reset password. The link may have expired.');
+      setError(err.response?.data?.message ?? 'Unable to reset the password. The link may have expired.');
     } finally {
       setSubmitting(false);
     }
@@ -40,64 +35,27 @@ export default function ResetPassword() {
 
   if (!token || !email) {
     return (
-      <div className="flex min-h-screen items-center justify-center px-4">
-        <div className="w-full max-w-sm space-y-4 rounded-lg bg-white p-8 text-center shadow dark:bg-slate-800">
-          <p className="text-sm text-red-600">This reset link is missing required information.</p>
-          <Link to="/forgot-password" className="text-blue-600 hover:underline">
-            Request a new link
-          </Link>
-        </div>
-      </div>
+      <AuthShell eyebrow="Invalid link" title="This reset link is incomplete" subtitle="Request a new reset link to continue safely." footer={<Link to="/login" className="text-link">Back to sign in</Link>}>
+        <div className="alert-error"><Icon name="alert" className="mt-0.5 h-4 w-4 shrink-0" /><span>The link is missing the account email or security token.</span></div>
+        <Link to="/forgot-password" className="btn-primary mt-5 w-full">Request a new link</Link>
+      </AuthShell>
     );
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-sm space-y-4 rounded-lg bg-white p-8 shadow dark:bg-slate-800"
-      >
-        <h1 className="text-2xl font-semibold">Reset Password</h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400">for {email}</p>
-
-        {error && (
-          <p className="rounded bg-red-100 px-3 py-2 text-sm text-red-700 dark:bg-red-900/40 dark:text-red-300">
-            {error}
-          </p>
-        )}
-
+    <AuthShell eyebrow="Secure reset" title="Choose a new password" subtitle={`Updating the password for ${email}`} footer={<Link to="/login" className="text-link">Cancel and return to sign in</Link>}>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        {error && <div className="alert-error"><Icon name="alert" className="mt-0.5 h-4 w-4 shrink-0" /><span>{error}</span></div>}
         <div>
-          <label className="block text-sm font-medium">New Password</label>
-          <input
-            type="password"
-            required
-            minLength={8}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 w-full rounded border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-900"
-          />
+          <label htmlFor="new-password" className="field-label">New password</label>
+          <input id="new-password" type="password" required minLength={8} autoComplete="new-password" value={password} onChange={(event) => setPassword(event.target.value)} className="form-control" placeholder="At least 8 characters" />
         </div>
-
         <div>
-          <label className="block text-sm font-medium">Confirm New Password</label>
-          <input
-            type="password"
-            required
-            minLength={8}
-            value={passwordConfirmation}
-            onChange={(e) => setPasswordConfirmation(e.target.value)}
-            className="mt-1 w-full rounded border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-900"
-          />
+          <label htmlFor="new-password-confirmation" className="field-label">Confirm new password</label>
+          <input id="new-password-confirmation" type="password" required minLength={8} autoComplete="new-password" value={passwordConfirmation} onChange={(event) => setPasswordConfirmation(event.target.value)} className="form-control" placeholder="Repeat your new password" />
         </div>
-
-        <button
-          type="submit"
-          disabled={submitting}
-          className="w-full rounded bg-blue-600 px-3 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-        >
-          {submitting ? 'Resetting...' : 'Reset Password'}
-        </button>
+        <button type="submit" disabled={submitting} className="btn-primary w-full">{submitting ? 'Updating password...' : 'Update password'}</button>
       </form>
-    </div>
+    </AuthShell>
   );
 }

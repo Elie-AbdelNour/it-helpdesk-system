@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createUser, listRoles, listUsers, updateUser } from '../api/users';
+import Icon from '../components/Icon';
+import PageHeader from '../components/PageHeader';
 
 const emptyForm = { fullname: '', email: '', password: '', password_confirmation: '', roleid: '' };
 
@@ -62,26 +64,18 @@ export default function AdminUsers() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold">Users</h1>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            View and manage user accounts and roles.
-          </p>
-        </div>
-        <button
-          onClick={() => setShowForm((s) => !s)}
-          className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-        >
-          {showForm ? 'Close' : '+ Add User'}
-        </button>
-      </div>
+      <PageHeader
+        eyebrow="Administration"
+        title="Users"
+        description="Create accounts, assign roles, and manage access to the workspace."
+        actions={<button onClick={() => setShowForm((s) => !s)} className={showForm ? 'btn-secondary' : 'btn-primary'}><Icon name={showForm ? 'close' : 'plus'} className="h-4 w-4" />{showForm ? 'Close form' : 'Add user'}</button>}
+      />
 
       {showForm && (
-        <section className="rounded-lg bg-white p-6 shadow dark:bg-slate-800">
+        <section className="app-card p-5 sm:p-6">
           <h2 className="text-lg font-semibold">Add User</h2>
           <form onSubmit={handleCreate} className="mt-4 grid gap-3 sm:grid-cols-2">
-            {errors.general && <p className="sm:col-span-2 text-sm text-red-600">{errors.general[0]}</p>}
+            {errors.general && <div className="alert-error sm:col-span-2"><Icon name="alert" className="h-4 w-4 shrink-0" />{errors.general[0]}</div>}
             <div>
               <label className="block text-sm font-medium">Full Name</label>
               <input
@@ -147,7 +141,7 @@ export default function AdminUsers() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                className="btn-primary"
               >
                 {submitting ? 'Creating...' : 'Create User'}
               </button>
@@ -156,7 +150,7 @@ export default function AdminUsers() {
         </section>
       )}
 
-      <section className="rounded-lg bg-white p-6 shadow dark:bg-slate-800">
+      <section className="app-card p-5 sm:p-6">
         <div className="flex flex-wrap gap-3">
           <input
             type="text"

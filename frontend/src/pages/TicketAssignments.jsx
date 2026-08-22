@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { assignTicket, listAssignableUsers, listTickets } from '../api/tickets';
+import Icon from '../components/Icon';
+import PageHeader from '../components/PageHeader';
 
 function formatDate(value) {
   return value ? new Date(value).toLocaleDateString() : '-';
@@ -41,16 +43,11 @@ export default function TicketAssignments() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Ticket Assignments</h1>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Unassigned tickets waiting to be picked up.
-        </p>
-      </div>
+      <PageHeader eyebrow="Queue management" title="Ticket assignments" description="Route unassigned requests to the right available specialist." />
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <div className="alert-error"><Icon name="alert" className="h-4 w-4 shrink-0" />{error}</div>}
 
-      <section className="overflow-x-auto rounded-lg bg-white shadow dark:bg-slate-800">
+      <section className="app-card overflow-x-auto">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-slate-200 text-slate-500 dark:border-slate-700 dark:text-slate-400">
             <tr>
@@ -91,7 +88,7 @@ export default function TicketAssignments() {
                   <button
                     onClick={() => handleAssign(t.id)}
                     disabled={!selectedAgent[t.id] || submittingId === t.id}
-                    className="rounded bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                    className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-3 py-2 text-xs font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
                   >
                     {submittingId === t.id ? 'Assigning...' : 'Assign'}
                   </button>

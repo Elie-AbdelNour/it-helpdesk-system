@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { getDashboardStats } from '../api/dashboard';
+import Icon from '../components/Icon';
+import PageHeader from '../components/PageHeader';
 
-const HUE = { blue: '#2a78d6', orange: '#eb6834' };
-const CHROME = { grid: '#e1e0d9', axis: '#898781', surface: '#fcfcfb', text: '#0b0b0b' };
+const HUE = { blue: '#2563eb', orange: '#10b981' };
+const CHROME = { grid: '#e8eef5', axis: '#94a3b8', surface: '#ffffff', text: '#0f172a' };
 
 export default function TeamWorkload() {
   const { data: stats, isLoading } = useQuery({
@@ -15,19 +17,14 @@ export default function TeamWorkload() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Team Workload</h1>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Open and resolved ticket counts per agent.
-        </p>
-      </div>
+      <PageHeader eyebrow="Team performance" title="Team workload" description="Compare open and resolved work across assigned support specialists." />
 
-      {isLoading && <p className="text-slate-500 dark:text-slate-400">Loading...</p>}
+      {isLoading && <div className="app-card flex h-72 items-center justify-center"><div className="loading-spinner" /></div>}
 
       {stats && (
-        <section className="rounded-lg bg-white p-6 shadow dark:bg-slate-800">
+        <section className="app-card p-5 sm:p-6">
           {byAgent.length === 0 ? (
-            <p className="text-sm text-slate-500 dark:text-slate-400">No tickets assigned yet.</p>
+            <div className="empty-state"><span className="empty-state-icon"><Icon name="workload" className="h-5 w-5" /></span><p className="text-sm font-medium text-slate-600">No assigned tickets yet</p><p className="mt-1 text-xs text-slate-400">Workload data will appear after the first assignment.</p></div>
           ) : (
             <>
               <ResponsiveContainer width="100%" height={Math.max(240, byAgent.length * 50)}>
@@ -61,10 +58,10 @@ export default function TeamWorkload() {
                   </thead>
                   <tbody>
                     {byAgent.map((agent) => (
-                      <tr key={agent.name} className="border-b border-slate-100 last:border-0 dark:border-slate-700">
-                        <td className="px-3 py-2 font-medium">{agent.name}</td>
-                        <td className="px-3 py-2">{agent.open}</td>
-                        <td className="px-3 py-2">{agent.resolved}</td>
+                      <tr key={agent.name} className="border-b border-slate-100 last:border-0">
+                        <td className="px-3 py-3 font-medium">{agent.name}</td>
+                        <td className="px-3 py-3"><span className="status-badge bg-blue-50 text-blue-700">{agent.open}</span></td>
+                        <td className="px-3 py-3"><span className="status-badge bg-emerald-50 text-emerald-700">{agent.resolved}</span></td>
                       </tr>
                     ))}
                   </tbody>

@@ -53,7 +53,7 @@ export default function NotificationBell() {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="relative rounded p-2 text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700"
+        className="relative rounded-xl border border-transparent p-2.5 text-slate-500 hover:border-slate-200 hover:bg-slate-50 hover:text-blue-600"
         aria-label="Notifications"
       >
         <BellIcon />
@@ -67,33 +67,36 @@ export default function NotificationBell() {
       {open && (
         <>
           <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 z-20 mt-2 w-80 rounded-lg border border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-800">
-            <div className="flex items-center justify-between border-b border-slate-200 px-3 py-2 dark:border-slate-700">
-              <span className="text-sm font-semibold">Notifications</span>
+          <div className="absolute right-0 z-50 mt-2 w-[min(22rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-900/10">
+            <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/70 px-4 py-3.5">
+              <div>
+                <span className="block text-sm font-semibold text-slate-900">Notifications</span>
+                <span className="mt-0.5 block text-[11px] text-slate-400">Recent help desk activity</span>
+              </div>
               {unreadCount > 0 && (
-                <button onClick={handleMarkAllRead} className="text-xs text-blue-600 hover:underline">
+                <button onClick={handleMarkAllRead} className="text-xs font-semibold text-blue-600 hover:text-blue-700">
                   Mark all read
                 </button>
               )}
             </div>
             <div className="max-h-80 overflow-y-auto">
               {notifications.length === 0 && (
-                <p className="px-3 py-4 text-center text-sm text-slate-500 dark:text-slate-400">
-                  No notifications yet.
+                <p className="px-5 py-10 text-center text-sm text-slate-400">
+                  You&rsquo;re all caught up.
                 </p>
               )}
               {notifications.map((notification) => (
                 <button
                   key={notification.id}
                   onClick={() => handleOpenNotification(notification)}
-                  className={`block w-full border-b border-slate-100 px-3 py-2 text-left text-sm last:border-0 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-700 ${
+                  className={`block w-full border-b border-slate-100 px-4 py-3.5 text-left text-sm last:border-0 hover:bg-blue-50/50 ${
                     notification.isread
-                      ? 'text-slate-500 dark:text-slate-400'
-                      : 'font-medium text-slate-900 dark:text-slate-100'
+                      ? 'text-slate-500'
+                      : 'bg-blue-50/30 font-medium text-slate-900'
                   }`}
                 >
                   <p>{notification.message}</p>
-                  <p className="mt-0.5 text-xs text-slate-400">{relativeTime(notification.createdat)}</p>
+                  <p className="mt-1 text-[11px] text-slate-400">{relativeTime(notification.createdat)}</p>
                 </button>
               ))}
             </div>

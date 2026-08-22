@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router';
+import AuthShell from '../components/AuthShell';
+import Icon from '../components/Icon';
 import { useAuth } from '../context/AuthContext';
 
 export default function OtpLogin() {
@@ -11,8 +13,8 @@ export default function OtpLogin() {
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  async function handleSubmit(event) {
+    event.preventDefault();
     setError(null);
     setSubmitting(true);
     try {
@@ -26,60 +28,22 @@ export default function OtpLogin() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-sm space-y-4 rounded-lg bg-white p-8 shadow dark:bg-slate-800"
-      >
-        <h1 className="text-2xl font-semibold">Log in with a Code</h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
-          Enter the 6-digit code we emailed you.
-        </p>
-
-        {error && (
-          <p className="rounded bg-red-100 px-3 py-2 text-sm text-red-700 dark:bg-red-900/40 dark:text-red-300">
-            {error}
-          </p>
-        )}
-
+    <AuthShell eyebrow="Passwordless access" title="Enter your login code" subtitle="We sent a six-digit code to your email. It remains valid for 10 minutes." footer={<Link to="/forgot-password" className="text-link">Request another code</Link>}>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        {error && <div className="alert-error"><Icon name="alert" className="mt-0.5 h-4 w-4 shrink-0" /><span>{error}</span></div>}
         <div>
-          <label className="block text-sm font-medium">Email</label>
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full rounded border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-900"
-          />
+          <label htmlFor="otp-email" className="field-label">Email address</label>
+          <input id="otp-email" type="email" required autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} className="form-control" />
         </div>
-
         <div>
-          <label className="block text-sm font-medium">Login Code</label>
-          <input
-            type="text"
-            required
-            inputMode="numeric"
-            maxLength={6}
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            className="mt-1 w-full rounded border border-slate-300 px-3 py-2 tracking-widest dark:border-slate-600 dark:bg-slate-900"
-          />
+          <label htmlFor="otp-code" className="field-label">Six-digit code</label>
+          <input id="otp-code" type="text" required inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} value={code} onChange={(event) => setCode(event.target.value.replace(/\D/g, ''))} className="form-control text-center text-xl font-semibold tracking-[0.45em]" placeholder="000000" />
         </div>
-
-        <button
-          type="submit"
-          disabled={submitting}
-          className="w-full rounded bg-blue-600 px-3 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-        >
-          {submitting ? 'Verifying...' : 'Log in'}
+        <button type="submit" disabled={submitting || code.length !== 6} className="btn-primary w-full">
+          {submitting ? 'Verifying...' : 'Verify and sign in'}
+          {!submitting && <Icon name="arrowRight" className="h-4 w-4" />}
         </button>
-
-        <p className="text-center text-sm">
-          <Link to="/forgot-password" className="text-blue-600 hover:underline">
-            Didn&rsquo;t get a code? Request one
-          </Link>
-        </p>
       </form>
-    </div>
+    </AuthShell>
   );
 }

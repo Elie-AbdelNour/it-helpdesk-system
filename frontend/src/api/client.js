@@ -22,24 +22,6 @@ function apiUrl() {
   return url.toString().replace(/\/$/, '');
 }
 
-function clearXsrfCookie() {
-  if (typeof document === 'undefined') return;
-
-  const host = window.location.hostname;
-  const domains = ['', host, 'localhost', '127.0.0.1'];
-
-  domains.forEach((domain) => {
-    document.cookie = [
-      'XSRF-TOKEN=',
-      'Max-Age=0',
-      'path=/',
-      domain ? `domain=${domain}` : '',
-    ]
-      .filter(Boolean)
-      .join('; ');
-  });
-}
-
 const client = axios.create({
   baseURL: apiUrl(),
   withCredentials: true,
@@ -50,7 +32,6 @@ const client = axios.create({
 });
 
 export async function ensureCsrfCookie() {
-  clearXsrfCookie();
   await client.get('/sanctum/csrf-cookie');
 }
 

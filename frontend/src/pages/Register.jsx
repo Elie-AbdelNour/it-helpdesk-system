@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
+import AuthShell from '../components/AuthShell';
+import Icon from '../components/Icon';
 import { useAuth } from '../context/AuthContext';
 
 export default function Register() {
@@ -13,8 +15,8 @@ export default function Register() {
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  async function handleSubmit(event) {
+    event.preventDefault();
     setErrors({});
 
     if (password !== passwordConfirmation) {
@@ -27,111 +29,66 @@ export default function Register() {
       await register(fullname, email, password, passwordConfirmation, phone);
       navigate('/');
     } catch (err) {
-      if (err.response?.status === 422) {
-        setErrors(err.response.data.errors ?? {});
-      } else {
-        setErrors({ general: [err.response?.data?.message ?? 'Unable to register.'] });
-      }
+      if (err.response?.status === 422) setErrors(err.response.data.errors ?? {});
+      else setErrors({ general: [err.response?.data?.message ?? 'Unable to create your account.'] });
     } finally {
       setSubmitting(false);
     }
   }
 
-  function fieldError(field) {
-    return errors[field]?.[0];
-  }
+  const fieldError = (field) => errors[field]?.[0];
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-sm space-y-4 rounded-lg bg-white p-8 shadow dark:bg-slate-800"
-      >
-        <h1 className="text-2xl font-semibold">Create Account</h1>
-
+    <AuthShell
+      eyebrow="Employee access"
+      title="Create your account"
+      subtitle="Register to submit requests and follow their progress. New registrations receive the Employee role."
+      footer={<>Already have an account? <Link to="/login" className="text-link">Sign in</Link></>}
+    >
+      <form onSubmit={handleSubmit} className="space-y-4">
         {errors.general && (
-          <p className="rounded bg-red-100 px-3 py-2 text-sm text-red-700 dark:bg-red-900/40 dark:text-red-300">
-            {errors.general[0]}
-          </p>
+          <div className="alert-error" role="alert">
+            <Icon name="alert" className="mt-0.5 h-4 w-4 shrink-0" />
+            <span>{errors.general[0]}</span>
+          </div>
         )}
 
         <div>
-          <label className="block text-sm font-medium">Full Name</label>
-          <input
-            type="text"
-            required
-            value={fullname}
-            onChange={(e) => setFullname(e.target.value)}
-            className="mt-1 w-full rounded border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-900"
-          />
-          {fieldError('fullname') && <p className="mt-1 text-sm text-red-600">{fieldError('fullname')}</p>}
+          <label htmlFor="fullname" className="field-label">Full name</label>
+          <input id="fullname" type="text" required autoComplete="name" value={fullname} onChange={(event) => setFullname(event.target.value)} className="form-control" placeholder="Your full name" />
+          {fieldError('fullname') && <p className="mt-1.5 text-xs text-red-600">{fieldError('fullname')}</p>}
         </div>
 
-        <div>
-          <label className="block text-sm font-medium">Email</label>
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full rounded border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-900"
-          />
-          {fieldError('email') && <p className="mt-1 text-sm text-red-600">{fieldError('email')}</p>}
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label htmlFor="register-email" className="field-label">Email address</label>
+            <input id="register-email" type="email" required autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} className="form-control" placeholder="name@company.com" />
+            {fieldError('email') && <p className="mt-1.5 text-xs text-red-600">{fieldError('email')}</p>}
+          </div>
+          <div>
+            <label htmlFor="phone" className="field-label">Phone <span className="font-normal text-slate-400">(optional)</span></label>
+            <input id="phone" type="tel" autoComplete="tel" value={phone} onChange={(event) => setPhone(event.target.value)} className="form-control" placeholder="+961 ..." />
+          </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium">Phone (optional)</label>
-          <input
-            type="tel"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="mt-1 w-full rounded border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-900"
-          />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label htmlFor="register-password" className="field-label">Password</label>
+            <input id="register-password" type="password" required minLength={8} autoComplete="new-password" value={password} onChange={(event) => setPassword(event.target.value)} className="form-control" placeholder="8+ characters" />
+            {fieldError('password') && <p className="mt-1.5 text-xs text-red-600">{fieldError('password')}</p>}
+          </div>
+          <div>
+            <label htmlFor="confirm-password" className="field-label">Confirm password</label>
+            <input id="confirm-password" type="password" required minLength={8} autoComplete="new-password" value={passwordConfirmation} onChange={(event) => setPasswordConfirmation(event.target.value)} className="form-control" placeholder="Repeat password" />
+            {fieldError('password_confirmation') && <p className="mt-1.5 text-xs text-red-600">{fieldError('password_confirmation')}</p>}
+          </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium">Password</label>
-          <input
-            type="password"
-            required
-            minLength={8}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 w-full rounded border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-900"
-          />
-          {fieldError('password') && <p className="mt-1 text-sm text-red-600">{fieldError('password')}</p>}
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium">Confirm Password</label>
-          <input
-            type="password"
-            required
-            minLength={8}
-            value={passwordConfirmation}
-            onChange={(e) => setPasswordConfirmation(e.target.value)}
-            className="mt-1 w-full rounded border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-900"
-          />
-          {fieldError('password_confirmation') && (
-            <p className="mt-1 text-sm text-red-600">{fieldError('password_confirmation')}</p>
-          )}
-        </div>
-
-        <button
-          type="submit"
-          disabled={submitting}
-          className="w-full rounded bg-blue-600 px-3 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-        >
-          {submitting ? 'Creating account...' : 'Register'}
+        <button type="submit" disabled={submitting} className="btn-primary mt-2 w-full">
+          {submitting ? 'Creating account...' : 'Create account'}
+          {!submitting && <Icon name="arrowRight" className="h-4 w-4" />}
         </button>
-
-        <p className="text-center text-sm">
-          Already have an account?{' '}
-          <Link to="/login" className="text-blue-600 hover:underline">
-            Log in
-          </Link>
-        </p>
       </form>
-    </div>
+    </AuthShell>
   );
 }

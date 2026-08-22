@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { listActivityLog } from '../api/activityLog';
+import PageHeader from '../components/PageHeader';
 
 function formatDateTime(value) {
   return value ? new Date(value).toLocaleString() : '-';
@@ -20,14 +21,9 @@ export default function AuditLog() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">System Audit Log</h1>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Every recorded action across the system.
-        </p>
-      </div>
+      <PageHeader eyebrow="Governance" title="System audit log" description="Review recorded account and ticket activity across the workspace." />
 
-      <section className="rounded-lg bg-white p-6 shadow dark:bg-slate-800">
+      <section className="app-card p-5 sm:p-6">
         <div className="flex flex-wrap gap-3">
           <input
             type="text"
@@ -71,7 +67,7 @@ export default function AuditLog() {
                 <tr key={log.id} className="border-b border-slate-100 last:border-0 dark:border-slate-700">
                   <td className="px-3 py-2">{formatDateTime(log.createdat)}</td>
                   <td className="px-3 py-2">{log.user?.fullname ?? '-'}</td>
-                  <td className="px-3 py-2">{log.action}</td>
+                  <td className="px-3 py-3"><span className="rounded-full bg-slate-100 px-2.5 py-1 font-mono text-[11px] font-semibold text-slate-600">{log.action}</span></td>
                   <td className="px-3 py-2">{log.details}</td>
                 </tr>
               ))}

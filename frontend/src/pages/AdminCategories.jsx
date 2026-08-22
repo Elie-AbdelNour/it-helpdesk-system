@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { listCategories } from '../api/tickets';
 import { createCategory, updateCategory } from '../api/categories';
+import Icon from '../components/Icon';
+import PageHeader from '../components/PageHeader';
 
 export default function AdminCategories() {
   const [categories, setCategories] = useState([]);
@@ -48,15 +50,12 @@ export default function AdminCategories() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Categories</h1>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Manage ticket categories.</p>
-      </div>
+      <PageHeader eyebrow="Configuration" title="Ticket categories" description="Keep request classification clear and easy for employees to understand." />
 
-      <section className="rounded-lg bg-white p-6 shadow dark:bg-slate-800">
+      <section className="app-card p-5 sm:p-6">
         <h2 className="text-lg font-semibold">{editingId ? 'Edit Category' : 'Add Category'}</h2>
         <form onSubmit={handleSubmit} className="mt-4 grid gap-3 sm:grid-cols-2">
-          {error && <p className="sm:col-span-2 text-sm text-red-600">{error}</p>}
+          {error && <div className="alert-error sm:col-span-2"><Icon name="alert" className="h-4 w-4 shrink-0" />{error}</div>}
           <div>
             <label className="block text-sm font-medium">Name</label>
             <input
@@ -80,7 +79,7 @@ export default function AdminCategories() {
             <button
               type="submit"
               disabled={submitting}
-              className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+              className="btn-primary"
             >
               {submitting ? 'Saving...' : editingId ? 'Save Changes' : 'Add Category'}
             </button>
@@ -88,7 +87,7 @@ export default function AdminCategories() {
               <button
                 type="button"
                 onClick={cancelEdit}
-                className="rounded bg-slate-200 px-4 py-2 text-sm font-medium hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600"
+                className="btn-secondary"
               >
                 Cancel
               </button>
@@ -97,7 +96,7 @@ export default function AdminCategories() {
         </form>
       </section>
 
-      <section className="rounded-lg bg-white p-6 shadow dark:bg-slate-800">
+      <section className="app-card overflow-hidden p-0">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-slate-200 text-slate-500 dark:border-slate-700 dark:text-slate-400">
             <tr>

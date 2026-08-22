@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router';
 import { useAuth } from '../context/AuthContext';
+import Icon from '../components/Icon';
+import PageHeader from '../components/PageHeader';
 import {
   listAssignableUsers,
   listCategories,
@@ -104,18 +106,15 @@ export default function TicketList() {
   }
 
   return (
-    <div>
-      <div className="flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold">{unassignedOnly ? 'Open (Unassigned) Tickets' : 'Tickets'}</h1>
-        <Link
-          to="/tickets/new"
-          className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-        >
-          New Ticket
-        </Link>
-      </div>
+    <div className="space-y-6">
+      <PageHeader
+        eyebrow={unassignedOnly ? 'Support queue' : isManagingUser ? 'Service operations' : 'My requests'}
+        title={unassignedOnly ? 'Open unassigned tickets' : 'Tickets'}
+        description={unassignedOnly ? 'Requests waiting for an owner.' : isManagingUser ? 'Search, filter, and manage support requests across the organization.' : 'Track your requests and their latest progress.'}
+        actions={<Link to="/tickets/new" className="btn-primary"><Icon name="plus" className="h-4 w-4" />New ticket</Link>}
+      />
 
-      <div className="mt-4 grid gap-3 rounded bg-white p-4 shadow dark:bg-slate-800 md:grid-cols-4">
+      <section className="app-card grid gap-3 p-4 md:grid-cols-4 lg:p-5">
         <input
           type="text"
           placeholder="Search subject or ref #"
@@ -212,15 +211,15 @@ export default function TicketList() {
         <button
           type="button"
           onClick={clearFilters}
-          className="rounded bg-slate-200 px-3 py-2 text-sm font-medium hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600"
+          className="btn-secondary"
         >
           Clear Filters
         </button>
-      </div>
+      </section>
 
-      {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
+      {error && <div className="alert-error"><Icon name="alert" className="h-4 w-4 shrink-0" />{error}</div>}
 
-      <div className="mt-4 overflow-x-auto rounded-lg bg-white shadow dark:bg-slate-800">
+      <div className="app-card overflow-x-auto">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-slate-200 text-slate-500 dark:border-slate-700 dark:text-slate-400">
             <tr>
@@ -280,7 +279,7 @@ export default function TicketList() {
           <button
             disabled={page <= 1}
             onClick={() => setPage((p) => p - 1)}
-            className="rounded bg-slate-200 px-3 py-1 disabled:opacity-50 dark:bg-slate-700"
+            className="btn-secondary min-h-0 px-3 py-1.5"
           >
             Previous
           </button>
@@ -290,7 +289,7 @@ export default function TicketList() {
           <button
             disabled={page >= tickets.last_page}
             onClick={() => setPage((p) => p + 1)}
-            className="rounded bg-slate-200 px-3 py-1 disabled:opacity-50 dark:bg-slate-700"
+            className="btn-secondary min-h-0 px-3 py-1.5"
           >
             Next
           </button>

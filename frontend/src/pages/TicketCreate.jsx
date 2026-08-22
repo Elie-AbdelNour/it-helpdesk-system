@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { createTicket, listCategories, listPriorities } from '../api/tickets';
+import Icon from '../components/Icon';
+import PageHeader from '../components/PageHeader';
 
 export default function TicketCreate() {
   const navigate = useNavigate();
@@ -14,116 +16,94 @@ export default function TicketCreate() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    listCategories().then((cats) => {
-      setCategories(cats);
-      if (cats.length) setCategoryid(String(cats[0].id));
+    listCategories().then((items) => {
+      setCategories(items);
+      if (items.length) setCategoryid(String(items[0].id));
     });
-    listPriorities().then((prios) => {
-      setPriorities(prios);
-      if (prios.length) setPriorityid(String(prios[0].id));
+    listPriorities().then((items) => {
+      setPriorities(items);
+      if (items.length) setPriorityid(String(items[0].id));
     });
   }, []);
 
-  function fieldError(field) {
-    return errors[field]?.[0];
-  }
+  const fieldError = (field) => errors[field]?.[0];
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  async function handleSubmit(event) {
+    event.preventDefault();
     setErrors({});
     setSubmitting(true);
     try {
       const ticket = await createTicket({ subject, description, categoryid, priorityid });
       navigate(`/tickets/${ticket.id}`);
     } catch (err) {
-      if (err.response?.status === 422) {
-        setErrors(err.response.data.errors ?? {});
-      } else {
-        setErrors({ general: [err.response?.data?.message ?? 'Unable to create ticket.'] });
-      }
+      if (err.response?.status === 422) setErrors(err.response.data.errors ?? {});
+      else setErrors({ general: [err.response?.data?.message ?? 'Unable to create the ticket.'] });
     } finally {
       setSubmitting(false);
     }
   }
 
   return (
-    <div className="mx-auto max-w-xl rounded-lg bg-white p-8 shadow dark:bg-slate-800">
-      <h1 className="text-2xl font-semibold">New Ticket</h1>
+    <div className="mx-auto max-w-6xl space-y-6">
+      <PageHeader
+        eyebrow="New support request"
+        title="How can we help?"
+        description="Share the issue and its impact. The right support specialist will take it from here."
+      />
 
-      <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-        {errors.general && (
-          <p className="rounded bg-red-100 px-3 py-2 text-sm text-red-700 dark:bg-red-900/40 dark:text-red-300">
-            {errors.general[0]}
-          </p>
-        )}
+      <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_300px]">
+        <form onSubmit={handleSubmit} className="app-card space-y-6 p-5 sm:p-7">
+          {errors.general && <div className="alert-error"><Icon name="alert" className="h-4 w-4 shrink-0" />{errors.general[0]}</div>}
 
-        <div>
-          <label className="block text-sm font-medium">Subject</label>
-          <input
-            type="text"
-            required
-            maxLength={200}
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
-            className="mt-1 w-full rounded border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-900"
-          />
-          {fieldError('subject') && <p className="mt-1 text-sm text-red-600">{fieldError('subject')}</p>}
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium">Description</label>
-          <textarea
-            required
-            rows={5}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="mt-1 w-full rounded border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-900"
-          />
-          {fieldError('description') && (
-            <p className="mt-1 text-sm text-red-600">{fieldError('description')}</p>
-          )}
-        </div>
-
-        <div className="flex gap-4">
-          <div className="flex-1">
-            <label className="block text-sm font-medium">Category</label>
-            <select
-              value={categoryid}
-              onChange={(e) => setCategoryid(e.target.value)}
-              className="mt-1 w-full rounded border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-900"
-            >
-              {categories.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
+          <div>
+            <label htmlFor="ticket-subject" className="field-label">Subject</label>
+            <input id="ticket-subject" type="text" required maxLength={200} value={subject} onChange={(event) => setSubject(event.target.value)} className="form-control" placeholder="A short summary of the issue" />
+            <div className="flex justify-between gap-4">
+              {fieldError('subject') ? <p className="mt-1.5 text-xs text-red-600">{fieldError('subject')}</p> : <p className="field-hint">Make it clear and specific.</p>}
+              <span className="mt-1.5 text-xs text-slate-400">{subject.length}/200</span>
+            </div>
           </div>
 
-          <div className="flex-1">
-            <label className="block text-sm font-medium">Priority</label>
-            <select
-              value={priorityid}
-              onChange={(e) => setPriorityid(e.target.value)}
-              className="mt-1 w-full rounded border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-900"
-            >
-              {priorities.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.name} ({p.targetresolutionhours}h target)
-                </option>
-              ))}
-            </select>
+          <div>
+            <label htmlFor="ticket-description" className="field-label">Description</label>
+            <textarea id="ticket-description" required rows={8} value={description} onChange={(event) => setDescription(event.target.value)} className="form-control resize-y" placeholder="What happened? What did you expect? Include any error messages or steps already tried." />
+            {fieldError('description') ? <p className="mt-1.5 text-xs text-red-600">{fieldError('description')}</p> : <p className="field-hint">Do not include passwords or other sensitive information.</p>}
           </div>
-        </div>
 
-        <button
-          type="submit"
-          disabled={submitting}
-          className="w-full rounded bg-blue-600 px-3 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-        >
-          {submitting ? 'Creating...' : 'Create Ticket'}
-        </button>
-      </form>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label htmlFor="ticket-category" className="field-label">Category</label>
+              <select id="ticket-category" value={categoryid} onChange={(event) => setCategoryid(event.target.value)} className="form-control">
+                {categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="ticket-priority" className="field-label">Priority</label>
+              <select id="ticket-priority" value={priorityid} onChange={(event) => setPriorityid(event.target.value)} className="form-control">
+                {priorities.map((priority) => <option key={priority.id} value={priority.id}>{priority.name} · {priority.targetresolutionhours}h target</option>)}
+              </select>
+            </div>
+          </div>
+
+          <div className="flex flex-col-reverse gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:justify-end">
+            <button type="button" onClick={() => navigate(-1)} className="btn-secondary">Cancel</button>
+            <button type="submit" disabled={submitting} className="btn-primary sm:min-w-40">
+              {submitting ? 'Creating...' : 'Create ticket'}
+              {!submitting && <Icon name="arrowRight" className="h-4 w-4" />}
+            </button>
+          </div>
+        </form>
+
+        <aside className="app-card p-5">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600"><Icon name="sparkles" className="h-5 w-5" /></span>
+          <h2 className="mt-4 text-sm font-semibold text-slate-900">Get a faster response</h2>
+          <ul className="mt-4 space-y-3 text-xs leading-5 text-slate-500">
+            {['Describe the business impact.', 'Include the exact error message.', 'List the steps that reproduce it.', 'Choose the closest category and priority.'].map((tip) => (
+              <li key={tip} className="flex gap-2.5"><Icon name="check" className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />{tip}</li>
+            ))}
+          </ul>
+        </aside>
+      </div>
     </div>
   );
 }

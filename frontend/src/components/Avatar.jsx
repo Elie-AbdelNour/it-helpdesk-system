@@ -25,7 +25,7 @@ function colorFor(fullname = '') {
 export default function Avatar({ fullname, size = 'h-9 w-9' }) {
   return (
     <div
-      className={`flex ${size} shrink-0 items-center justify-center rounded-full ${colorFor(fullname)} text-sm font-semibold text-white`}
+      className={`flex ${size} shrink-0 items-center justify-center rounded-xl ${colorFor(fullname)} text-sm font-semibold text-white shadow-sm ring-2 ring-white`}
       title={fullname}
     >
       {initialsOf(fullname)}

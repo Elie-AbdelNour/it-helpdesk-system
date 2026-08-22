@@ -26,13 +26,13 @@ export default function AttachmentList({ ticketId, attachments = [], currentUser
         return (
           <div
             key={attachment.id}
-            className="flex flex-col items-start gap-1 rounded border border-slate-200 p-2 text-xs dark:border-slate-700"
+            className="group flex flex-col items-start gap-1.5 rounded-xl border border-slate-200 bg-white p-2.5 text-xs shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md"
           >
             <a href={url} target="_blank" rel="noreferrer" className="block">
               {isImage ? (
-                <img src={url} alt={attachment.filename} className="h-20 w-20 rounded object-cover" />
+                <img src={url} alt={attachment.filename} className="h-20 w-20 rounded-lg object-cover" />
               ) : (
-                <span className="flex h-20 w-20 items-center justify-center rounded bg-slate-100 text-center font-medium text-slate-500 dark:bg-slate-700 dark:text-slate-300">
+                <span className="flex h-20 w-20 items-center justify-center rounded-lg bg-slate-100 text-center font-semibold text-slate-500">
                   {attachment.filetype?.toUpperCase()}
                 </span>
               )}

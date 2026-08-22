@@ -46,20 +46,20 @@ export default function FileUpload({
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-wrap items-center gap-3 rounded-xl border border-dashed border-slate-200 bg-slate-50/70 p-3">
       <input
         ref={inputRef}
         type="file"
         accept={accept}
         onChange={handleFileChange}
-        className="text-sm text-slate-600 file:mr-3 file:rounded file:border-0 file:bg-slate-200 file:px-3 file:py-1.5 file:text-sm file:font-medium hover:file:bg-slate-300 dark:text-slate-300 dark:file:bg-slate-700 dark:hover:file:bg-slate-600"
+        className="min-w-0 flex-1 text-sm text-slate-500 file:mr-3 file:rounded-lg file:border-0 file:bg-white file:px-3 file:py-2 file:text-xs file:font-semibold file:text-slate-700 file:shadow-sm hover:file:bg-blue-50 hover:file:text-blue-700"
       />
       {file && (
         <button
           type="button"
           onClick={handleUpload}
           disabled={uploading}
-          className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+          className="btn-primary min-h-0 py-2"
         >
           {uploading ? 'Uploading...' : buttonLabel}
         </button>

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
+import AuthShell from '../components/AuthShell';
+import Icon from '../components/Icon';
 import { useAuth } from '../context/AuthContext';
 
 export default function Login() {
@@ -7,80 +9,99 @@ export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  async function handleSubmit(event) {
+    event.preventDefault();
     setError(null);
     setSubmitting(true);
     try {
       await login(email, password);
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.message ?? 'Unable to log in.');
+      setError(err.response?.data?.message ?? 'Unable to log in. Check your email and password.');
     } finally {
       setSubmitting(false);
     }
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-sm space-y-4 rounded-lg bg-white p-8 shadow dark:bg-slate-800"
-      >
-        <h1 className="text-2xl font-semibold">IT Help Desk Login</h1>
-
+    <AuthShell
+      title="Sign in to your workspace"
+      footer={
+        <>
+          New to the help desk?{' '}
+          <Link to="/register" className="text-link">Create an employee account</Link>
+        </>
+      }
+    >
+      <form onSubmit={handleSubmit} className="space-y-5">
         {error && (
-          <p className="rounded bg-red-100 px-3 py-2 text-sm text-red-700 dark:bg-red-900/40 dark:text-red-300">
-            {error}
-          </p>
+          <div className="alert-error" role="alert">
+            <Icon name="alert" className="mt-0.5 h-4 w-4 shrink-0" />
+            <span>{error}</span>
+          </div>
         )}
 
         <div>
-          <label className="block text-sm font-medium">Email</label>
+          <label htmlFor="email" className="field-label">Email address</label>
           <input
+            id="email"
             type="email"
             required
+            autoComplete="email"
+            placeholder="name@company.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full rounded border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-900"
+            onChange={(event) => setEmail(event.target.value)}
+            className="form-control"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium">Password</label>
-          <input
-            type="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 w-full rounded border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-900"
-          />
+          <div className="flex items-center justify-between gap-3">
+            <label htmlFor="password" className="field-label">Password</label>
+            <Link to="/forgot-password" className="text-link text-xs">Forgot password?</Link>
+          </div>
+          <div className="relative">
+            <input
+              id="password"
+              type={showPassword ? 'text' : 'password'}
+              required
+              autoComplete="current-password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              className="form-control pr-11"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((visible) => !visible)}
+              className="absolute right-2.5 top-1/2 mt-1 -translate-y-1/2 rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+            >
+              <Icon name={showPassword ? 'eyeOff' : 'eye'} className="h-4 w-4" />
+            </button>
+          </div>
         </div>
 
-        <button
-          type="submit"
-          disabled={submitting}
-          className="w-full rounded bg-blue-600 px-3 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-        >
-          {submitting ? 'Logging in...' : 'Log in'}
+        <button type="submit" disabled={submitting} className="btn-primary w-full">
+          {submitting ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" /> : null}
+          {submitting ? 'Signing in...' : 'Sign in'}
+          {!submitting && <Icon name="arrowRight" className="h-4 w-4" />}
         </button>
 
-        <p className="text-center text-sm">
-          <Link to="/forgot-password" className="text-blue-600 hover:underline">
-            Forgot password?
-          </Link>
-        </p>
+        <div className="flex items-center gap-3 py-1">
+          <span className="h-px flex-1 bg-slate-100" />
+          <span className="text-[11px] font-medium uppercase tracking-wider text-slate-400">Alternative access</span>
+          <span className="h-px flex-1 bg-slate-100" />
+        </div>
 
-        <p className="text-center text-sm">
-          No account?{' '}
-          <Link to="/register" className="text-blue-600 hover:underline">
-            Register
-          </Link>
-        </p>
+        <Link to="/forgot-password" className="btn-secondary w-full">
+          Email me a one-time code
+        </Link>
       </form>
-    </div>
+    </AuthShell>
   );
 }

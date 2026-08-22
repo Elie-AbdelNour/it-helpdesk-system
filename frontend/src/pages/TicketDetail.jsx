@@ -19,6 +19,7 @@ import { uploadAttachment } from '../api/attachments';
 import { IMAGE_EXTENSIONS, validateFile } from '../lib/fileValidation';
 import FileUpload from '../components/FileUpload';
 import AttachmentList from '../components/AttachmentList';
+import Icon from '../components/Icon';
 
 const MANAGING_ROLES = ['Admin', 'Manager', 'IT Support Agent'];
 
@@ -259,11 +260,18 @@ export default function TicketDetail() {
   }
 
   if (notFound) {
-    return <p className="text-slate-500">Ticket not found, or you do not have access to it.</p>;
+    return (
+      <div className="app-card empty-state min-h-[360px]">
+        <span className="empty-state-icon"><Icon name="alert" className="h-5 w-5" /></span>
+        <h1 className="text-lg font-semibold text-slate-900">Ticket unavailable</h1>
+        <p className="mt-2 max-w-sm text-sm text-slate-500">The ticket does not exist or your role does not have permission to view it.</p>
+        <button type="button" onClick={() => navigate('/tickets')} className="btn-secondary mt-5"><Icon name="arrowLeft" className="h-4 w-4" />Back to tickets</button>
+      </div>
+    );
   }
 
   if (!ticket) {
-    return <p className="text-slate-500">Loading...</p>;
+    return <div className="app-card flex min-h-[360px] items-center justify-center"><div className="loading-spinner" /></div>;
   }
 
   const isOwner = ticket.creator?.id === user.id;
@@ -299,17 +307,18 @@ export default function TicketDetail() {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-lg bg-white p-6 shadow dark:bg-slate-800">
+      <section className="app-card p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-semibold">{ticket.ticketrefno}</h1>
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{ticket.subject}</p>
+            <p className="page-eyebrow">Ticket details</p>
+            <h1 className="text-2xl font-semibold tracking-tight text-slate-950 sm:text-[28px]">{ticket.ticketrefno}</h1>
+            <p className="mt-1.5 text-sm text-slate-500">{ticket.subject}</p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {canEdit && !editing && (
               <button
                 onClick={() => setEditing(true)}
-                className="rounded bg-slate-200 px-3 py-1.5 text-sm font-medium hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600"
+                className="btn-secondary min-h-0 py-2"
               >
                 Edit
               </button>
@@ -317,7 +326,7 @@ export default function TicketDetail() {
             {canDelete && (
               <button
                 onClick={handleDelete}
-                className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-700"
+                className="inline-flex items-center justify-center rounded-xl bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-700"
               >
                 Delete
               </button>
@@ -325,7 +334,7 @@ export default function TicketDetail() {
           </div>
         </div>
 
-        <dl className="mt-5 grid gap-4 text-sm text-slate-500 dark:text-slate-400 sm:grid-cols-2 lg:grid-cols-4">
+        <dl className="ticket-meta mt-6 grid gap-3 text-sm text-slate-500 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <dt>Status</dt>
             <dd className="font-medium text-slate-900 dark:text-slate-100">{ticket.status?.name}</dd>
