@@ -12,6 +12,7 @@ import {
 } from '../api/tickets';
 
 const MANAGING_ROLES = ['Admin', 'Manager', 'IT Support Agent'];
+const SUPERVISOR_ROLES = ['Admin', 'Manager'];
 
 function formatDate(value) {
   return value ? new Date(value).toLocaleDateString() : '-';
@@ -36,9 +37,13 @@ function resolutionText(ticket) {
 
 export default function TicketList() {
   const { user } = useAuth();
-  const isManagingUser = MANAGING_ROLES.includes(user.role?.rolename);
+  const roleName = user.role?.rolename;
+  const isManagingUser = MANAGING_ROLES.includes(roleName);
+  const isItSupportAgent = roleName === 'IT Support Agent';
+  const isSupervisor = SUPERVISOR_ROLES.includes(roleName);
   const [searchParams] = useSearchParams();
   const unassignedOnly = searchParams.get('unassigned') === '1';
+  const escalatedOnly = searchParams.get('escalated') === '1';
   const [tickets, setTickets] = useState(null);
   const [categories, setCategories] = useState([]);
   const [priorities, setPriorities] = useState([]);
@@ -63,14 +68,14 @@ export default function TicketList() {
       listCategories(),
       listPriorities(),
       listStatuses(),
-      isManagingUser ? listAssignableUsers() : Promise.resolve([]),
+      isSupervisor ? listAssignableUsers() : Promise.resolve([]),
     ]).then(([cats, prios, stats, users]) => {
       setCategories(cats);
       setPriorities(prios);
       setStatuses(stats);
       setAgents(users);
     });
-  }, [isManagingUser]);
+  }, [isSupervisor]);
 
   useEffect(() => {
     setError(null);
@@ -79,11 +84,12 @@ export default function TicketList() {
       if (value) params[key] = value;
     });
     if (unassignedOnly) params.unassigned = 1;
+    if (escalatedOnly) params.escalated = 1;
 
     listTickets(params)
       .then(setTickets)
       .catch(() => setError('Unable to load tickets.'));
-  }, [filters, page, unassignedOnly]);
+  }, [escalatedOnly, filters, page, unassignedOnly]);
 
   function updateFilter(key, value) {
     setPage(1);
@@ -108,9 +114,9 @@ export default function TicketList() {
   return (
     <div className="space-y-6">
       <PageHeader
-        eyebrow={unassignedOnly ? 'Support queue' : isManagingUser ? 'Service operations' : 'My requests'}
-        title={unassignedOnly ? 'Open unassigned tickets' : 'Tickets'}
-        description={unassignedOnly ? 'Requests waiting for an owner.' : isManagingUser ? 'Search, filter, and manage support requests across the organization.' : 'Track your requests and their latest progress.'}
+        eyebrow={escalatedOnly ? 'Management queue' : unassignedOnly ? 'Support queue' : isItSupportAgent ? 'My workload' : isManagingUser ? 'Service operations' : 'My requests'}
+        title={escalatedOnly ? 'Escalated tickets' : unassignedOnly ? 'Open unassigned tickets' : isItSupportAgent ? 'Assigned tickets' : 'Tickets'}
+        description={escalatedOnly ? 'Tickets waiting for management review and assignment.' : unassignedOnly ? 'Requests waiting for an owner.' : isItSupportAgent ? 'Tickets currently assigned to you.' : isManagingUser ? 'Search, filter, and manage support requests across the organization.' : 'Track your requests and their latest progress.'}
         actions={<Link to="/tickets/new" className="btn-primary"><Icon name="plus" className="h-4 w-4" />New ticket</Link>}
       />
 
@@ -158,7 +164,7 @@ export default function TicketList() {
             </option>
           ))}
         </select>
-        {isManagingUser && (
+        {isSupervisor && (
           <select
             value={filters.assignedto}
             onChange={(e) => updateFilter('assignedto', e.target.value)}
@@ -227,7 +233,7 @@ export default function TicketList() {
               <th className="px-4 py-2">Subject</th>
               <th className="px-4 py-2">Priority</th>
               <th className="px-4 py-2">Status</th>
-              {isManagingUser && <th className="px-4 py-2">Agent</th>}
+              {isSupervisor && <th className="px-4 py-2">{escalatedOnly ? 'Escalated by' : 'Agent'}</th>}
               <th className="px-4 py-2">Created</th>
               <th className="px-4 py-2">Due</th>
               <th className="px-4 py-2">Resolution</th>
@@ -247,7 +253,11 @@ export default function TicketList() {
                 <td className="px-4 py-2">{t.subject}</td>
                 <td className="px-4 py-2">{t.priority?.name}</td>
                 <td className="px-4 py-2">{t.status?.name}</td>
-                {isManagingUser && <td className="px-4 py-2">{t.agent?.fullname ?? '-'}</td>}
+                {isSupervisor && (
+                  <td className="px-4 py-2">
+                    {escalatedOnly ? t.open_escalation?.escalated_by?.fullname ?? '-' : t.agent?.fullname ?? '-'}
+                  </td>
+                )}
                 <td className="px-4 py-2">{formatDate(t.createdat)}</td>
                 <td className="px-4 py-2">{formatDate(t.resolutiondueat)}</td>
                 <td className="px-4 py-2">
@@ -265,7 +275,7 @@ export default function TicketList() {
             ))}
             {tickets && tickets.data.length === 0 && (
               <tr>
-                <td colSpan={isManagingUser ? 8 : 7} className="px-4 py-6 text-center text-slate-500">
+                <td colSpan={isSupervisor ? 8 : 7} className="px-4 py-6 text-center text-slate-500">
                   No tickets found.
                 </td>
               </tr>

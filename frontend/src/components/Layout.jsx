@@ -24,6 +24,7 @@ const NAV_BY_ROLE = {
     { to: '/', label: 'Dashboard', icon: 'dashboard' },
     { to: '/tickets', label: 'All Tickets', icon: 'tickets' },
     { to: '/ticket-assignments', label: 'Ticket Assignments', icon: 'assignment' },
+    { to: '/tickets?escalated=1', label: 'Escalated Tickets', icon: 'alert' },
     { to: '/team-workload', label: 'Team Workload', icon: 'workload' },
     { to: '/reports', label: 'Reports', icon: 'reports' },
     { to: '/audit-log', label: 'System Audit Log', icon: 'audit' },
@@ -33,6 +34,7 @@ const NAV_BY_ROLE = {
     { to: '/tickets', label: 'All Tickets', icon: 'tickets' },
     { to: '/tickets/new', label: 'Create Ticket', icon: 'plus' },
     { to: '/ticket-assignments', label: 'Ticket Assignments', icon: 'assignment' },
+    { to: '/tickets?escalated=1', label: 'Escalated Tickets', icon: 'alert' },
     { to: '/team-workload', label: 'Team Workload', icon: 'workload' },
     { to: '/reports', label: 'Reports', icon: 'reports' },
     { to: '/admin/users', label: 'Users', icon: 'users' },
@@ -61,7 +63,9 @@ function isItemActive(item, location) {
   const [path, query] = item.to.split('?');
   if (query) return location.pathname === path && location.search === `?${query}`;
   if (path === '/') return location.pathname === '/';
-  if (path === '/tickets') return location.pathname === '/tickets' || /^\/tickets\/\d+$/.test(location.pathname);
+  if (path === '/tickets') {
+    return (location.pathname === '/tickets' && !location.search) || /^\/tickets\/\d+$/.test(location.pathname);
+  }
   return location.pathname === path;
 }
 

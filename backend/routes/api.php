@@ -69,5 +69,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/priorities', [LookupController::class, 'priorities']);
     Route::get('/statuses', [LookupController::class, 'statuses']);
     Route::get('/assignable-users', [LookupController::class, 'assignableUsers'])
-        ->middleware('role:Admin,Manager,IT Support Agent');
+        ->middleware('role:Admin,Manager');
 });

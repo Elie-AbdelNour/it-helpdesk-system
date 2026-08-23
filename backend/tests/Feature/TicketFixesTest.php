@@ -89,7 +89,7 @@ class TicketFixesTest extends TestCase
         $this->assertDatabaseMissing('tickets', ['id' => $touchedTicketId]);
     }
 
-    public function test_escalation_requires_a_higher_priority_and_is_restricted_to_managing_roles(): void
+    public function test_escalation_validates_priority_and_is_restricted_to_it_agents(): void
     {
         $ticketId = $this->createTicket('Low');
         $low = Priority::where('name', 'Low')->firstOrFail();
@@ -102,18 +102,21 @@ class TicketFixesTest extends TestCase
 
         Sanctum::actingAs($this->agent);
         $this
+            ->postJson("/api/tickets/{$ticketId}/assign", ['assignedto' => $this->agent->id])
+            ->assertOk();
+
+        $this
             ->postJson("/api/tickets/{$ticketId}/escalate", ['priorityid' => $low->id, 'notes' => 'Same priority'])
             ->assertUnprocessable();
 
         $this
             ->postJson("/api/tickets/{$ticketId}/escalate", [
                 'priorityid' => $high->id,
-                'assignedto' => $this->admin->id,
                 'notes' => 'Customer is blocked, needs immediate attention',
             ])
             ->assertOk()
             ->assertJsonPath('priorityid', $high->id)
-            ->assertJsonPath('assignedto', $this->admin->id)
+            ->assertJsonPath('assignedto', null)
             ->assertJsonPath('targetresolutionhours', $high->targetresolutionhours);
 
         $this->assertDatabaseHas('activitylogs', [
@@ -121,10 +124,16 @@ class TicketFixesTest extends TestCase
             'entityid' => $ticketId,
             'action' => 'ticket_escalated',
         ]);
-        $this->assertDatabaseHas('assignmenthistories', [
+        $this->assertDatabaseHas('ticketescalations', [
             'ticketid' => $ticketId,
-            'assignedto' => $this->admin->id,
+            'escalatedby' => $this->agent->id,
+            'reason' => 'Customer is blocked, needs immediate attention',
         ]);
+
+        Sanctum::actingAs($this->admin);
+        $this->postJson("/api/tickets/{$ticketId}/escalate", [
+            'notes' => 'Administrators review escalations instead of creating them',
+        ])->assertForbidden();
     }
 
     public function test_authentication_events_are_recorded_in_activity_log(): void

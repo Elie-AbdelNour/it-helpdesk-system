@@ -11,7 +11,7 @@ use App\Models\User;
 
 class LookupController extends Controller
 {
-    private const ASSIGNABLE_ROLES = ['Admin', 'Manager', 'IT Support Agent'];
+    private const IT_SUPPORT_ROLE = 'IT Support Agent';
 
     public function categories()
     {
@@ -37,7 +37,7 @@ class LookupController extends Controller
     {
         return User::with('role')
             ->where('isactive', true)
-            ->whereHas('role', fn ($query) => $query->whereIn('rolename', self::ASSIGNABLE_ROLES))
+            ->whereHas('role', fn ($query) => $query->where('rolename', self::IT_SUPPORT_ROLE))
             ->orderBy('fullname')
             ->get();
     }

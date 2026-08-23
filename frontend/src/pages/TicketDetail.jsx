@@ -22,6 +22,7 @@ import AttachmentList from '../components/AttachmentList';
 import Icon from '../components/Icon';
 
 const MANAGING_ROLES = ['Admin', 'Manager', 'IT Support Agent'];
+const SUPERVISOR_ROLES = ['Admin', 'Manager'];
 
 function formatDateTime(value) {
   return value ? new Date(value).toLocaleString() : '-';
@@ -60,7 +61,10 @@ export default function TicketDetail() {
   const { id } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const isManagingUser = MANAGING_ROLES.includes(user.role?.rolename);
+  const roleName = user.role?.rolename;
+  const isManagingUser = MANAGING_ROLES.includes(roleName);
+  const isItSupportAgent = roleName === 'IT Support Agent';
+  const isSupervisor = SUPERVISOR_ROLES.includes(roleName);
 
   const [ticket, setTicket] = useState(null);
   const [categories, setCategories] = useState([]);
@@ -72,7 +76,7 @@ export default function TicketDetail() {
   const [form, setForm] = useState({ subject: '', description: '', categoryid: '', priorityid: '' });
   const [statusForm, setStatusForm] = useState({ statusid: '', notes: '' });
   const [assignmentForm, setAssignmentForm] = useState({ assignedto: '', notes: '' });
-  const [escalationForm, setEscalationForm] = useState({ priorityid: '', assignedto: '', notes: '' });
+  const [escalationForm, setEscalationForm] = useState({ priorityid: '', notes: '' });
   const [commentForm, setCommentForm] = useState({ commenttext: '', isinternal: false });
   const [commentImage, setCommentImage] = useState(null);
   const [commentImageError, setCommentImageError] = useState(null);
@@ -122,14 +126,14 @@ export default function TicketDetail() {
       listCategories(),
       listPriorities(),
       listStatuses(),
-      isManagingUser ? listAssignableUsers() : Promise.resolve([]),
+      isSupervisor ? listAssignableUsers() : Promise.resolve([]),
     ]).then(([cats, prios, stats, users]) => {
       setCategories(cats);
       setPriorities(prios);
       setStatuses(stats);
       setAgents(users);
     });
-  }, [isManagingUser]);
+  }, [isSupervisor]);
 
   useEffect(() => {
     loadTicket();
@@ -188,7 +192,10 @@ export default function TicketDetail() {
     setWorkflowError(null);
     setSubmitting('assignment');
     try {
-      const updated = await assignTicket(id, assignmentForm);
+      const payload = isItSupportAgent
+        ? { assignedto: user.id }
+        : assignmentForm;
+      const updated = await assignTicket(id, payload);
       setAssignmentForm((current) => ({ ...current, notes: '' }));
       await refreshWorkflow(updated);
     } catch (err) {
@@ -204,7 +211,7 @@ export default function TicketDetail() {
     setSubmitting('escalation');
     try {
       const updated = await escalateTicket(id, escalationForm);
-      setEscalationForm({ priorityid: '', assignedto: '', notes: '' });
+      setEscalationForm({ priorityid: '', notes: '' });
       await refreshWorkflow(updated);
     } catch (err) {
       setWorkflowError(err.response?.data?.message ?? 'Unable to escalate ticket.');
@@ -275,9 +282,11 @@ export default function TicketDetail() {
   }
 
   const isOwner = ticket.creator?.id === user.id;
-  const canEdit = isManagingUser || isOwner;
+  const isAssignedToCurrentUser = ticket.assignedto === user.id;
+  const canEdit = isSupervisor || isAssignedToCurrentUser || isOwner;
   const isUntouched = ticket.assignedto === null && ticket.status?.name === 'Open';
-  const canDelete = user.role?.rolename === 'Admin' || (isOwner && isUntouched);
+  const isEscalated = Boolean(ticket.open_escalation);
+  const canDelete = roleName === 'Admin' || (isOwner && isUntouched && ticket.escalations_count === 0);
   const resolutionIsLate = ticket.resolutionstate === 'overdue' || ticket.resolutionstate === 'resolved_late';
 
   // Eloquent snake_cases multi-word relation names in JSON, so the eager-loaded
@@ -383,6 +392,16 @@ export default function TicketDetail() {
           </div>
         </dl>
       </section>
+
+      {isManagingUser && isEscalated && (
+        <section className="rounded-lg border border-amber-300 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-900/30">
+          <p className="font-semibold text-amber-800 dark:text-amber-200">Waiting for management review</p>
+          <p className="mt-1 text-sm text-amber-700 dark:text-amber-300">{ticket.open_escalation.reason}</p>
+          <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">
+            Escalated by {ticket.open_escalation.escalated_by?.fullname ?? 'IT support'} on {formatDateTime(ticket.open_escalation.escalatedat)}
+          </p>
+        </section>
+      )}
 
       {isPending && (
         <section className="rounded-lg border border-amber-300 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-900/30">
@@ -542,121 +561,146 @@ export default function TicketDetail() {
       )}
 
       {isManagingUser && (
-        <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <form onSubmit={handleStatusSubmit} className="rounded-lg bg-white p-6 shadow dark:bg-slate-800">
-            <h2 className="text-lg font-semibold">Status</h2>
-            <div className="mt-4 space-y-3">
-              <select
-                value={statusForm.statusid}
-                onChange={(e) => setStatusForm((f) => ({ ...f, statusid: e.target.value }))}
-                className="w-full rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
-              >
-                {statuses.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.name}
-                  </option>
-                ))}
-              </select>
-              <textarea
-                rows={3}
-                required={isPausingWork}
-                placeholder={isPausingWork ? 'Reason for pausing work' : 'Status notes'}
-                value={statusForm.notes}
-                onChange={(e) => setStatusForm((f) => ({ ...f, notes: e.target.value }))}
-                className="w-full rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
-              />
-              <button
-                type="submit"
-                disabled={submitting === 'status'}
-                className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-              >
-                {submitting === 'status' ? 'Updating...' : 'Update Status'}
-              </button>
-            </div>
-          </form>
+        <section className={`grid gap-4 md:grid-cols-2 ${isItSupportAgent ? 'lg:grid-cols-3' : ''}`}>
+          {(isSupervisor || isAssignedToCurrentUser) && (
+            <form onSubmit={handleStatusSubmit} className="rounded-lg bg-white p-6 shadow dark:bg-slate-800">
+              <h2 className="text-lg font-semibold">Status</h2>
+              <div className="mt-4 space-y-3">
+                <select
+                  value={statusForm.statusid}
+                  onChange={(e) => setStatusForm((f) => ({ ...f, statusid: e.target.value }))}
+                  className="w-full rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
+                >
+                  {statuses.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.name}
+                    </option>
+                  ))}
+                </select>
+                <textarea
+                  rows={3}
+                  required={isPausingWork}
+                  placeholder={isPausingWork ? 'Reason for pausing work' : 'Status notes'}
+                  value={statusForm.notes}
+                  onChange={(e) => setStatusForm((f) => ({ ...f, notes: e.target.value }))}
+                  className="w-full rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
+                />
+                <button
+                  type="submit"
+                  disabled={submitting === 'status'}
+                  className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                >
+                  {submitting === 'status' ? 'Updating...' : 'Update Status'}
+                </button>
+              </div>
+            </form>
+          )}
 
           <form onSubmit={handleAssignSubmit} className="rounded-lg bg-white p-6 shadow dark:bg-slate-800">
             <h2 className="text-lg font-semibold">Assignment</h2>
             <div className="mt-4 space-y-3">
-              <select
-                required
-                value={assignmentForm.assignedto}
-                onChange={(e) => setAssignmentForm((f) => ({ ...f, assignedto: e.target.value }))}
-                className="w-full rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
-              >
-                <option value="">Select agent</option>
-                {agents.map((agent) => (
-                  <option key={agent.id} value={agent.id}>
-                    {agent.fullname} ({agent.role?.rolename})
-                  </option>
-                ))}
-              </select>
-              <textarea
-                rows={3}
-                placeholder="Assignment notes"
-                value={assignmentForm.notes}
-                onChange={(e) => setAssignmentForm((f) => ({ ...f, notes: e.target.value }))}
-                className="w-full rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
-              />
-              <button
-                type="submit"
-                disabled={submitting === 'assignment'}
-                className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-              >
-                {submitting === 'assignment' ? 'Assigning...' : 'Assign Ticket'}
-              </button>
+              {isItSupportAgent ? (
+                <>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">
+                    {isAssignedToCurrentUser
+                      ? 'This ticket is assigned to you.'
+                      : isEscalated
+                        ? 'This ticket is waiting for management review.'
+                      : ticket.assignedto
+                        ? `This ticket is assigned to ${ticket.agent?.fullname ?? 'another agent'}.`
+                        : 'Take ownership of this unassigned ticket.'}
+                  </p>
+                  <button
+                    type="submit"
+                    disabled={submitting === 'assignment' || ticket.assignedto !== null || isEscalated}
+                    className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                  >
+                    {submitting === 'assignment'
+                      ? 'Assigning...'
+                      : isAssignedToCurrentUser
+                        ? 'Assigned to you'
+                        : isEscalated
+                          ? 'Awaiting management'
+                        : ticket.assignedto
+                          ? 'Already assigned'
+                          : 'Assign to me'}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <select
+                    required
+                    value={assignmentForm.assignedto}
+                    onChange={(e) => setAssignmentForm((f) => ({ ...f, assignedto: e.target.value }))}
+                    className="w-full rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
+                  >
+                    <option value="">Select IT agent</option>
+                    {agents.map((agent) => (
+                      <option key={agent.id} value={agent.id}>
+                        {agent.fullname}
+                      </option>
+                    ))}
+                  </select>
+                  <textarea
+                    rows={3}
+                    placeholder="Assignment notes"
+                    value={assignmentForm.notes}
+                    onChange={(e) => setAssignmentForm((f) => ({ ...f, notes: e.target.value }))}
+                    className="w-full rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
+                  />
+                  <button
+                    type="submit"
+                    disabled={submitting === 'assignment'}
+                    className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                  >
+                    {submitting === 'assignment' ? 'Assigning...' : 'Assign Ticket'}
+                  </button>
+                </>
+              )}
             </div>
           </form>
 
-          <form onSubmit={handleEscalateSubmit} className="rounded-lg bg-white p-6 shadow dark:bg-slate-800">
-            <h2 className="text-lg font-semibold">Escalate</h2>
-            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-              Raise priority and/or hand off to another agent, with a reason on record.
-            </p>
-            <div className="mt-4 space-y-3">
-              <select
-                value={escalationForm.priorityid}
-                onChange={(e) => setEscalationForm((f) => ({ ...f, priorityid: e.target.value }))}
-                className="w-full rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
-              >
-                <option value="">Keep current priority</option>
-                {priorities
-                  .filter((p) => p.level > (ticket.priority?.level ?? 0))
-                  .map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.name} ({p.targetresolutionhours}h target)
-                    </option>
-                  ))}
-              </select>
-              <select
-                value={escalationForm.assignedto}
-                onChange={(e) => setEscalationForm((f) => ({ ...f, assignedto: e.target.value }))}
-                className="w-full rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
-              >
-                <option value="">Keep current assignee</option>
-                {agents.map((agent) => (
-                  <option key={agent.id} value={agent.id}>
-                    {agent.fullname} ({agent.role?.rolename})
-                  </option>
-                ))}
-              </select>
-              <textarea
-                rows={3}
-                required
-                placeholder="Reason for escalation"
-                value={escalationForm.notes}
-                onChange={(e) => setEscalationForm((f) => ({ ...f, notes: e.target.value }))}
-                className="w-full rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
-              />
-              <button
-                type="submit"
-                disabled={submitting === 'escalation'}
-                className="rounded bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700 disabled:opacity-50"
-              >
-                {submitting === 'escalation' ? 'Escalating...' : 'Escalate Ticket'}
-              </button>
-            </div>
-          </form>
+          {isItSupportAgent && !isEscalated && (
+            <form onSubmit={handleEscalateSubmit} className="rounded-lg bg-white p-6 shadow dark:bg-slate-800">
+              <h2 className="text-lg font-semibold">Escalate</h2>
+              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                Send this ticket to the shared management review queue.
+              </p>
+              <div className="mt-4 space-y-3">
+                <select
+                  value={escalationForm.priorityid}
+                  onChange={(e) => setEscalationForm((f) => ({ ...f, priorityid: e.target.value }))}
+                  disabled={!isAssignedToCurrentUser}
+                  className="w-full rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
+                >
+                  <option value="">Keep current priority</option>
+                  {priorities
+                    .filter((p) => p.level > (ticket.priority?.level ?? 0))
+                    .map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.name} ({p.targetresolutionhours}h target)
+                      </option>
+                    ))}
+                </select>
+                <textarea
+                  rows={3}
+                  required
+                  placeholder="Reason for escalation"
+                  value={escalationForm.notes}
+                  onChange={(e) => setEscalationForm((f) => ({ ...f, notes: e.target.value }))}
+                  disabled={!isAssignedToCurrentUser}
+                  className="w-full rounded border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900"
+                />
+                <button
+                  type="submit"
+                  disabled={submitting === 'escalation' || !isAssignedToCurrentUser}
+                  className="rounded bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700 disabled:opacity-50"
+                >
+                  {submitting === 'escalation' ? 'Escalating...' : 'Escalate Ticket'}
+                </button>
+              </div>
+            </form>
+          )}
         </section>
       )}
 

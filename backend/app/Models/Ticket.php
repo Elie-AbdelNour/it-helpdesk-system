@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Ticket extends Model
 {
     const CREATED_AT = 'createdat';
+
     const UPDATED_AT = 'updatedat';
 
     protected $fillable = [
@@ -119,6 +121,18 @@ class Ticket extends Model
     public function assignmentHistories(): HasMany
     {
         return $this->hasMany(AssignmentHistory::class, 'ticketid');
+    }
+
+    public function escalations(): HasMany
+    {
+        return $this->hasMany(TicketEscalation::class, 'ticketid');
+    }
+
+    public function openEscalation(): HasOne
+    {
+        return $this->hasOne(TicketEscalation::class, 'ticketid')
+            ->whereNull('reviewedat')
+            ->latest('escalatedat');
     }
 
     public function statusHistories(): HasMany

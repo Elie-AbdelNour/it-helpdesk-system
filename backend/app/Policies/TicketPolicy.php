@@ -26,7 +26,11 @@ class TicketPolicy
 
     public function update(User $user, Ticket $ticket): bool
     {
-        return $this->isManager($user) || $ticket->createdby === $user->id;
+        if ($user->role->rolename === 'IT Support Agent') {
+            return $ticket->assignedto === $user->id;
+        }
+
+        return $this->isSupervisor($user) || $ticket->createdby === $user->id;
     }
 
     public function assign(User $user, Ticket $ticket): bool
@@ -36,12 +40,13 @@ class TicketPolicy
 
     public function escalate(User $user, Ticket $ticket): bool
     {
-        return $this->isManager($user);
+        return $user->role->rolename === 'IT Support Agent';
     }
 
     public function changeStatus(User $user, Ticket $ticket): bool
     {
-        return $this->isManager($user);
+        return $this->isSupervisor($user)
+            || ($user->role->rolename === 'IT Support Agent' && $ticket->assignedto === $user->id);
     }
 
     public function comment(User $user, Ticket $ticket): bool
@@ -67,11 +72,19 @@ class TicketPolicy
         // Once a ticket has been picked up (assigned or moved out of Open),
         // deleting it would cascade away the agent's assignment/status/comment
         // history. Only the untouched, still-Open ticket may be self-deleted.
-        return $ticket->assignedto === null && $ticket->status->name === 'Open';
+        return $ticket->assignedto === null
+            && $ticket->status->name === 'Open'
+            && ! $ticket->assignmentHistories()->exists()
+            && ! $ticket->escalations()->exists();
     }
 
     private function isManager(User $user): bool
     {
         return in_array($user->role->rolename, self::MANAGING_ROLES, true);
+    }
+
+    private function isSupervisor(User $user): bool
+    {
+        return in_array($user->role->rolename, ['Admin', 'Manager'], true);
     }
 }

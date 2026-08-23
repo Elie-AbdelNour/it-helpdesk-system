@@ -9,10 +9,12 @@ use App\Models\Priority;
 use App\Models\Status;
 use App\Models\Ticket;
 use App\Models\TicketComment;
+use App\Models\TicketEscalation;
 use App\Models\TicketStatusHistory;
 use App\Models\User;
 use App\Support\Concerns\NotifiesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class TicketController extends Controller
@@ -20,6 +22,11 @@ class TicketController extends Controller
     use NotifiesUsers;
 
     private const MANAGING_ROLES = ['Admin', 'Manager', 'IT Support Agent'];
+
+    private const SUPERVISOR_ROLES = ['Admin', 'Manager'];
+
+    private const IT_SUPPORT_ROLE = 'IT Support Agent';
+
     private const FINAL_STATUSES = ['Resolved', 'Closed'];
 
     public function index(Request $request)
@@ -33,6 +40,7 @@ class TicketController extends Controller
             'statusid' => ['nullable', 'integer', 'exists:statuses,id'],
             'assignedto' => ['nullable', 'integer', 'exists:users,id'],
             'unassigned' => ['nullable', 'boolean'],
+            'escalated' => ['nullable', 'boolean'],
             'createdfrom' => ['nullable', 'date'],
             'createdto' => ['nullable', 'date', 'after_or_equal:createdfrom'],
             'resolvedfrom' => ['nullable', 'date'],
@@ -41,9 +49,23 @@ class TicketController extends Controller
             'closedto' => ['nullable', 'date', 'after_or_equal:closedfrom'],
         ]);
 
-        $query = Ticket::query()->with(['category', 'priority', 'status', 'creator', 'agent']);
+        $query = Ticket::query()
+            ->with(['category', 'priority', 'status', 'creator', 'agent'])
+            ->withCount('escalations');
 
-        if (! $this->isManagingUser($request->user())) {
+        if ($this->isManagingUser($request->user())) {
+            $query->with('openEscalation.escalatedBy');
+        }
+
+        if ($this->isItSupportAgent($request->user())) {
+            $query->when(
+                $validated['unassigned'] ?? false,
+                fn ($query) => $query
+                    ->whereNull('assignedto')
+                    ->whereDoesntHave('openEscalation'),
+                fn ($query) => $query->where('assignedto', $request->user()->id),
+            );
+        } elseif (! $this->isManagingUser($request->user())) {
             $query->where('createdby', $request->user()->id);
         }
 
@@ -65,7 +87,13 @@ class TicketController extends Controller
         }
 
         if ($validated['unassigned'] ?? false) {
-            $query->whereNull('assignedto');
+            $query
+                ->whereNull('assignedto')
+                ->whereDoesntHave('openEscalation');
+        }
+
+        if ($validated['escalated'] ?? false) {
+            $query->whereHas('openEscalation');
         }
 
         $this->applyDateRange($query, 'createdat', $validated['createdfrom'] ?? null, $validated['createdto'] ?? null);
@@ -184,22 +212,53 @@ class TicketController extends Controller
         ]);
 
         $agent = User::with('role')->findOrFail($validated['assignedto']);
-        if (! $this->isManagingUser($agent)) {
+        $actor = $request->user();
+        $openEscalation = $ticket->openEscalation()->first();
+
+        if ($this->isItSupportAgent($actor)) {
+            if ($agent->id !== $actor->id) {
+                throw ValidationException::withMessages([
+                    'assignedto' => ['IT support agents can only assign a ticket to themselves.'],
+                ]);
+            }
+
+            if ($ticket->assignedto !== null) {
+                throw ValidationException::withMessages([
+                    'assignedto' => ['IT support agents can only claim unassigned tickets.'],
+                ]);
+            }
+
+            if ($openEscalation) {
+                throw ValidationException::withMessages([
+                    'assignedto' => ['Escalated tickets must be reviewed and assigned by a manager or administrator.'],
+                ]);
+            }
+        } elseif (! $this->isItSupportAgent($agent)) {
             throw ValidationException::withMessages([
-                'assignedto' => ['Tickets can only be assigned to an admin, manager, or IT support agent.'],
+                'assignedto' => ['Managers and administrators can only assign tickets to IT support agents.'],
             ]);
         }
 
         $assignedFrom = $ticket->assignedto;
-        $ticket->update(['assignedto' => $agent->id]);
+        DB::transaction(function () use ($actor, $agent, $assignedFrom, $openEscalation, $ticket, $validated): void {
+            $ticket->update(['assignedto' => $agent->id]);
 
-        AssignmentHistory::create([
-            'ticketid' => $ticket->id,
-            'assignedfrom' => $assignedFrom,
-            'assignedto' => $agent->id,
-            'assignedby' => $request->user()->id,
-            'notes' => $validated['notes'] ?? null,
-        ]);
+            if ($openEscalation) {
+                $openEscalation->update([
+                    'reviewedby' => $actor->id,
+                    'reviewedat' => now(),
+                    'assignedto' => $agent->id,
+                ]);
+            }
+
+            AssignmentHistory::create([
+                'ticketid' => $ticket->id,
+                'assignedfrom' => $assignedFrom,
+                'assignedto' => $agent->id,
+                'assignedby' => $actor->id,
+                'notes' => $validated['notes'] ?? null,
+            ]);
+        });
 
         $this->recordActivity(
             $request,
@@ -219,18 +278,24 @@ class TicketController extends Controller
 
         $validated = $request->validate([
             'priorityid' => ['nullable', 'integer', 'exists:priorities,id'],
-            'assignedto' => ['nullable', 'integer', 'exists:users,id'],
             'notes' => ['required', 'string', 'max:500'],
         ]);
 
-        if (empty($validated['priorityid']) && empty($validated['assignedto'])) {
+        $actor = $request->user();
+        if ($ticket->assignedto !== $actor->id) {
             throw ValidationException::withMessages([
-                'priorityid' => ['Escalation requires a higher priority, a new assignee, or both.'],
+                'assignedto' => ['IT support agents can only escalate tickets assigned to them.'],
+            ]);
+        }
+
+        if ($ticket->openEscalation()->exists()) {
+            throw ValidationException::withMessages([
+                'notes' => ['This ticket is already waiting for management review.'],
             ]);
         }
 
         $updates = [];
-        $summary = [];
+        $summary = 'Escalated to management queue';
 
         if (! empty($validated['priorityid'])) {
             $currentPriority = $ticket->priority;
@@ -248,48 +313,35 @@ class TicketController extends Controller
                 $ticket->createdat ?? now(),
                 $newPriority->targetresolutionhours,
             );
-            $summary[] = "priority {$currentPriority->name} to {$newPriority->name}";
+            $summary .= "; priority {$currentPriority->name} to {$newPriority->name}";
         }
 
-        $agent = null;
-        $assignedFrom = null;
-        if (! empty($validated['assignedto'])) {
-            $agent = User::with('role')->findOrFail($validated['assignedto']);
-            if (! $this->isManagingUser($agent)) {
-                throw ValidationException::withMessages([
-                    'assignedto' => ['Tickets can only be escalated to an admin, manager, or IT support agent.'],
-                ]);
-            }
+        DB::transaction(function () use ($actor, $ticket, $updates, $validated): void {
+            $ticket->update([...$updates, 'assignedto' => null]);
 
-            $assignedFrom = $ticket->assignedto;
-            $updates['assignedto'] = $agent->id;
-            $summary[] = "reassigned to {$agent->fullname}";
-        }
-
-        $ticket->update($updates);
-
-        if ($agent) {
-            AssignmentHistory::create([
+            TicketEscalation::create([
                 'ticketid' => $ticket->id,
-                'assignedfrom' => $assignedFrom,
-                'assignedto' => $agent->id,
-                'assignedby' => $request->user()->id,
-                'notes' => 'Escalation: '.$validated['notes'],
+                'escalatedby' => $actor->id,
+                'reason' => $validated['notes'],
             ]);
-        }
+        });
 
         $this->recordActivity(
             $request,
             $ticket,
             'ticket_escalated',
-            'Escalated ('.implode(', ', $summary).'): '.$validated['notes'],
+            $summary.': '.$validated['notes'],
         );
 
-        if ($agent) {
-            $this->notifyUser($agent->id, $ticket, "Ticket {$ticket->ticketrefno} was escalated to you", 'escalation');
-        } elseif ($ticket->assignedto) {
-            $this->notifyUser((int) $ticket->assignedto, $ticket, "Ticket {$ticket->ticketrefno} was escalated", 'escalation');
-        }
+        User::query()
+            ->where('isactive', true)
+            ->whereHas('role', fn ($query) => $query->whereIn('rolename', self::SUPERVISOR_ROLES))
+            ->each(fn (User $supervisor) => $this->notifyUser(
+                $supervisor->id,
+                $ticket,
+                "Ticket {$ticket->ticketrefno} needs management review",
+                'escalation',
+            ));
 
         return $this->loadTicket($ticket->fresh(), $request);
     }
@@ -458,6 +510,7 @@ class TicketController extends Controller
         )->get();
 
         $assignmentHistories = collect();
+        $escalations = collect();
         $activityLogs = collect();
 
         if ($isManagingUser) {
@@ -466,6 +519,15 @@ class TicketController extends Controller
                     ->with(['fromUser', 'toUser', 'byUser'])
                     ->latest('assignedat'),
                 'assignedat',
+                $dateFrom,
+                $dateTo,
+            )->get();
+
+            $escalations = $this->applyDateRange(
+                $ticket->escalations()
+                    ->with(['escalatedBy', 'reviewedBy', 'assignedAgent'])
+                    ->latest('escalatedat'),
+                'escalatedat',
                 $dateFrom,
                 $dateTo,
             )->get();
@@ -504,12 +566,20 @@ class TicketController extends Controller
                 'actor' => $item->byUser?->fullname,
                 'createdat' => $item->assignedat,
             ]))
+            ->merge($escalations->map(fn ($item) => [
+                'type' => 'escalation',
+                'title' => $item->reviewedat ? 'Escalation reviewed' : 'Escalated to management',
+                'details' => $item->reason,
+                'actor' => $item->escalatedBy?->fullname,
+                'createdat' => $item->escalatedat,
+            ]))
             ->sortByDesc('createdat')
             ->values();
 
         return response()->json([
             'statushistories' => $statusHistories,
             'assignmenthistories' => $assignmentHistories,
+            'escalations' => $escalations,
             'comments' => $comments,
             'activitylogs' => $activityLogs,
             'timeline' => $timeline,
@@ -550,10 +620,11 @@ class TicketController extends Controller
                 'assignmentHistories.fromUser',
                 'assignmentHistories.toUser',
                 'assignmentHistories.byUser',
+                'openEscalation.escalatedBy',
             ];
         }
 
-        return $ticket->load($relations);
+        return $ticket->load($relations)->loadCount('escalations');
     }
 
     private function calculateDueAt($createdAt, ?int $targetHours)
@@ -593,5 +664,10 @@ class TicketController extends Controller
     private function isManagingUser(User $user): bool
     {
         return in_array($user->role?->rolename, self::MANAGING_ROLES, true);
+    }
+
+    private function isItSupportAgent(User $user): bool
+    {
+        return $user->role?->rolename === self::IT_SUPPORT_ROLE;
     }
 }
